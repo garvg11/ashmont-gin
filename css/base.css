@@ -11,6 +11,11 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: auto; /* the scroll engine owns this */
+  /* Reserve the scrollbar gutter. Without it the viewport narrows by the
+     scrollbar width the moment the preloader unlocks scrolling, which
+     shifts the whole page sideways and leaves the WebGL drawing buffer
+     wider than the element it is drawn into. */
+  scrollbar-gutter: stable;
 }
 
 body,

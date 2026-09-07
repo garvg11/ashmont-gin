@@ -62,7 +62,7 @@ export function createScene(container, { tier = 'high' } = {}) {
   });
   const maxDpr = tier === 'high' ? 2 : tier === 'medium' ? 1.6 : 1.25;
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxDpr));
-  renderer.setSize(container.clientWidth, container.clientHeight);
+  renderer.setSize(container.clientWidth, container.clientHeight, true);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.94;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -138,6 +138,8 @@ export function createScene(container, { tier = 'high' } = {}) {
     uniforms: {
       uA: { value: new THREE.Color(palette.glowA) },
       uB: { value: new THREE.Color(palette.glowB) },
+      uCenter: { value: new THREE.Vector2(0.5, 0.5) },
+      uAspect: { value: 1 },
     },
     vertexShader: `
       varying vec2 vUv;
@@ -149,24 +151,41 @@ export function createScene(container, { tier = 'high' } = {}) {
     fragmentShader: `
       uniform vec3 uA;
       uniform vec3 uB;
+      uniform vec2 uCenter;
+      uniform float uAspect;
       varying vec2 vUv;
       void main() {
-        // A pool of light standing behind the bottle, not a full wash.
-        // The falloff is tight so the page keeps its dark ground.
-        vec2 p = vUv - vec2(0.53, 0.54);
-        p.x *= 1.55;
+        // A pool of light that tracks the bottle's projected position, so
+        // the object is backlit wherever the camera puts it.
+        vec2 p = vUv - uCenter;
+        p.x *= uAspect;
         float d = length(p);
-        float core = smoothstep(0.34, 0.0, d) * 0.62;
-        float halo = smoothstep(0.72, 0.05, d) * 0.46;
+        float core = smoothstep(0.40, 0.0, d) * 0.62;
+        float halo = smoothstep(0.95, 0.05, d) * 0.46;
         gl_FragColor = vec4(mix(uB, uA, clamp(core + halo, 0.0, 1.0)), 1.0);
       }
     `,
     depthWrite: false,
     fog: false,
   });
-  const backdrop = new THREE.Mesh(new THREE.PlaneGeometry(30, 20), backdropMat);
-  backdrop.position.set(0, 0.35, -7.5);
-  scene.add(backdrop);
+  /* Parented to the camera and rescaled to the frustum every frame. A plane
+     sitting in world space stops covering the viewport once the window gets
+     wide, which leaves the page background showing as a band down the edge. */
+  const BACKDROP_DIST = 24;
+  const backdrop = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), backdropMat);
+  backdrop.position.set(0, 0, -BACKDROP_DIST);
+  backdrop.renderOrder = -1;
+  camera.add(backdrop);
+  scene.add(camera);
+
+  const focus = new THREE.Vector3();
+
+  function fitBackdrop() {
+    const h = 2 * Math.tan((camera.fov * Math.PI) / 360) * BACKDROP_DIST;
+    // Slightly oversized so no rounding or parallax can expose an edge.
+    backdrop.scale.set(h * camera.aspect * 1.06, h * 1.06, 1);
+    backdropMat.uniforms.uAspect.value = camera.aspect;
+  }
 
   /* ---------- Light ---------- */
   const key = new THREE.DirectionalLight(palette.key, theme === 'dark' ? 2.6 : 3.4);
@@ -330,23 +349,38 @@ export function createScene(container, { tier = 'high' } = {}) {
     buildEnvironment();
   }
 
+  let lastW = 0;
+  let lastH = 0;
+
   function resize() {
     const w = container.clientWidth;
     const h = container.clientHeight;
     if (!w || !h) return;
+    if (w === lastW && h === lastH) return;
+    lastW = w;
+    lastH = h;
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxDpr));
-    renderer.setSize(w, h, false);
+    renderer.setSize(w, h, true);
     camera.aspect = w / h;
     // Narrow screens: pull back so the bottle is never cropped, and let the
     // composition recentre because the layout is a single column there.
     camera.userData.narrow = clamp((980 - w) / 620);
     camera.updateProjectionMatrix();
+    fitBackdrop();
     if (motes) motes.material.uniforms.uPixelRatio.value = renderer.getPixelRatio();
     measure();
     snap = true;
   }
 
   resize();
+
+  /* A scrollbar appearing changes the container width without firing a
+     window resize, which otherwise leaves the drawing buffer wider than the
+     element it is drawn into. */
+  if ('ResizeObserver' in window) {
+    const ro = new ResizeObserver(() => resize());
+    ro.observe(container);
+  }
 
   window.addEventListener('resize', resize, { passive: true });
   window.addEventListener('orientationchange', resize, { passive: true });
@@ -373,6 +407,12 @@ export function createScene(container, { tier = 'high' } = {}) {
 
   function render(dt) {
     time += dt;
+
+    /* Size is checked here rather than trusted to resize events. A
+       scrollbar appearing changes the container without firing one, and a
+       ResizeObserver can miss it if the change coalesces with the initial
+       observation. This is one clean layout read per frame. */
+    if (container.clientWidth !== lastW || container.clientHeight !== lastH) resize();
 
     sample(progress);
 
@@ -419,6 +459,11 @@ export function createScene(container, { tier = 'high' } = {}) {
 
     camera.position.copy(camPos);
     camera.lookAt(camLook);
+    camera.updateMatrixWorld();
+
+    fitBackdrop();
+    focus.set(0, bottle.group.position.y + 1.3, 0).project(camera);
+    backdropMat.uniforms.uCenter.value.set(focus.x * 0.5 + 0.5, focus.y * 0.5 + 0.5);
 
     // A slow idle turn on top of the scroll-driven spin, so the bottle is
     // never completely still even when the reader is.
@@ -476,6 +521,7 @@ export function createScene(container, { tier = 'high' } = {}) {
       if (stop) stop();
       io.disconnect();
       bottle.dispose();
+      camera.remove(backdrop);
       backdrop.geometry.dispose();
       backdropMat.dispose();
       if (motes) {
