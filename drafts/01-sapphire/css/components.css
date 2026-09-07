@@ -1,0 +1,775 @@
+/* ============================================================
+   ASHMONT GIN - Components and micro-interactions
+   ============================================================ */
+
+/* ---------- Buttons ----------
+   Shape lock: 2px radius, no pills. Fill wipes in from the side the
+   cursor actually entered (set by JS as --wipe-x / --wipe-y). */
+
+.btn {
+  --wipe-x: 50%;
+  --wipe-y: 50%;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7em;
+  padding: 1.05em 1.9em;
+  border-radius: var(--radius);
+  font-family: var(--font-text);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap; /* CTA labels never wrap */
+  overflow: hidden;
+  isolation: isolate;
+  transition: color var(--dur-ui) var(--ease-soft),
+    border-color var(--dur-ui) var(--ease-soft),
+    transform var(--dur-micro) var(--ease-soft);
+  will-change: transform;
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--btn-wipe, var(--accent-hover));
+  clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
+  transition: clip-path 520ms var(--ease-out);
+}
+
+.btn:hover::before,
+.btn:focus-visible::before {
+  clip-path: circle(150% at var(--wipe-x) var(--wipe-y));
+}
+
+.btn:active {
+  transform: scale(0.985);
+}
+
+/* Primary: sapphire fill, white label. 5.6:1 on dark, 6.9:1 on light. */
+.btn--primary {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  --btn-wipe: var(--accent-hover);
+}
+
+.btn--primary:hover,
+.btn--primary:focus-visible {
+  color: var(--accent-hover-text);
+}
+
+/* Secondary: hairline box. Always has a visible border so it never
+   disappears against the scene. */
+.btn--ghost {
+  border: 1px solid var(--line-strong);
+  color: var(--text);
+  --btn-wipe: var(--text);
+}
+
+.btn--ghost:hover,
+.btn--ghost:focus-visible {
+  color: var(--bg);
+  border-color: var(--text);
+}
+
+/* ---------- Text link with drawn underline ---------- */
+
+.link {
+  position: relative;
+  display: inline-block;
+  color: var(--text);
+  padding-bottom: 2px;
+}
+
+.link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--accent-lit);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 420ms var(--ease-out);
+}
+
+.link:hover::after,
+.link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* ---------- Navigation ----------
+   One line at desktop, 68px tall. Hairline and blur arrive only once
+   the hero has been passed, so the hero stays uninterrupted. */
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-nav);
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid transparent;
+  transition: background-color 500ms var(--ease-soft),
+    border-color 500ms var(--ease-soft), backdrop-filter 500ms var(--ease-soft);
+}
+
+.nav[data-stuck="true"] {
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border-bottom-color: var(--line);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .nav[data-stuck="true"] {
+    background: var(--bg);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+.nav__inner {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 40;
+  font-size: 1.32rem;
+  letter-spacing: 0.11em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 2.4vw, 38px);
+}
+
+.nav__link {
+  font-size: var(--fs-small);
+  color: var(--text-2);
+  transition: color var(--dur-ui) var(--ease-soft);
+}
+
+.nav__link:hover,
+.nav__link:focus-visible {
+  color: var(--text);
+}
+
+.nav__right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.nav .btn {
+  padding: 0.75em 1.3em;
+  font-size: var(--fs-micro);
+}
+
+/* Theme toggle */
+.theme-toggle {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--text-2);
+  transition: color var(--dur-ui) var(--ease-soft),
+    border-color var(--dur-ui) var(--ease-soft);
+}
+
+.theme-toggle:hover {
+  color: var(--text);
+  border-color: var(--line-strong);
+}
+
+.theme-toggle svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Show the mode the button switches you to, never the current one. */
+.theme-toggle .icon-sun { display: block; }
+.theme-toggle .icon-moon { display: none; }
+:root[data-theme="light"] .theme-toggle .icon-sun { display: none; }
+:root[data-theme="light"] .theme-toggle .icon-moon { display: block; }
+
+/* Menu button appears only under 900px */
+.nav__menu-btn {
+  display: none;
+  width: 40px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.nav__menu-btn span {
+  display: block;
+  width: 20px;
+  height: 1px;
+  background: var(--text);
+  transition: transform 380ms var(--ease-out), opacity 200ms linear;
+}
+
+.nav__menu-btn[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(3px) rotate(45deg);
+}
+
+.nav__menu-btn[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav__menu-btn[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-3px) rotate(-45deg);
+}
+
+/* Mobile drawer */
+.nav__drawer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding: var(--gutter);
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 720ms var(--ease-out);
+  visibility: hidden;
+}
+
+.nav__drawer[data-open="true"] {
+  clip-path: inset(0 0 0 0);
+  visibility: visible;
+}
+
+/* Must exclude .btn, or the display size wins on specificity and the
+   CTA renders at 34px and overflows the drawer. */
+.nav__drawer a:not(.btn) {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 8.4vw, 3.2rem);
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.nav__drawer a {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out);
+}
+
+.nav__drawer[data-open="true"] a {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(var(--i) * 60ms + 180ms);
+}
+
+.nav__drawer .btn {
+  margin-top: 28px;
+  align-self: flex-start;
+}
+
+@media (max-width: 900px) {
+  .nav__links,
+  .nav .btn--primary {
+    display: none;
+  }
+  .nav__menu-btn {
+    display: flex;
+  }
+}
+
+/* ---------- Custom cursor ----------
+   Requested explicitly in the brief. Gated to fine pointers, removed
+   under reduced motion, and never applied over text inputs. */
+
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--z-cursor);
+  pointer-events: none;
+  mix-blend-mode: difference;
+  opacity: 0;
+  transition: opacity 300ms linear;
+}
+
+.cursor__dot,
+.cursor__ring {
+  position: absolute;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+
+.cursor__dot {
+  width: 6px;
+  height: 6px;
+  background: #fff;
+}
+
+.cursor__ring {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgb(255 255 255 / 0.55);
+  transition: width 420ms var(--ease-out), height 420ms var(--ease-out),
+    background-color 420ms var(--ease-out), border-color 420ms var(--ease-out);
+}
+
+.cursor[data-active="true"] .cursor__ring {
+  width: 58px;
+  height: 58px;
+  background: rgb(255 255 255 / 0.9);
+  border-color: transparent;
+}
+
+.cursor[data-active="true"] .cursor__dot {
+  opacity: 0;
+}
+
+html[data-cursor="custom"] body,
+html[data-cursor="custom"] a,
+html[data-cursor="custom"] button {
+  cursor: none;
+}
+
+html[data-cursor="custom"] input,
+html[data-cursor="custom"] textarea,
+html[data-cursor="custom"] select,
+html[data-cursor="custom"] label {
+  cursor: auto;
+}
+
+html[data-cursor="custom"] .cursor {
+  opacity: 1;
+}
+
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .cursor {
+    display: none;
+  }
+}
+
+/* ---------- Preloader ---------- */
+
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-gate);
+  background: var(--ink-950);
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding: var(--gutter);
+}
+
+#preloader[data-done="true"] {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1000ms var(--ease-inout);
+  pointer-events: none;
+}
+
+.pre__center {
+  display: grid;
+  place-content: center;
+  text-align: center;
+  gap: 18px;
+}
+
+.pre__mark {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 7vw, 4.5rem);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--bone);
+  overflow: hidden;
+}
+
+.pre__mark span {
+  display: inline-block;
+  transform: translateY(105%);
+  animation: pre-rise 900ms var(--ease-out) forwards;
+  animation-delay: calc(var(--i) * 45ms);
+}
+
+@keyframes pre-rise {
+  to {
+    transform: translateY(0);
+  }
+}
+
+.pre__bar {
+  position: relative;
+  width: min(320px, 60vw);
+  height: 1px;
+  background: rgb(230 233 240 / 0.16);
+  margin-inline: auto;
+  overflow: hidden;
+}
+
+.pre__bar i {
+  position: absolute;
+  inset: 0;
+  background: var(--sapphire-lit);
+  transform: scaleX(var(--p, 0));
+  transform-origin: left;
+  transition: transform 260ms var(--ease-out);
+}
+
+.pre__foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  color: var(--mist-dim);
+}
+
+/* ---------- Age gate ---------- */
+
+#age-gate {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-gate);
+  background: color-mix(in srgb, var(--ink-950) 94%, transparent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: grid;
+  place-items: center;
+  padding: var(--gutter);
+  opacity: 0;
+  transition: opacity 600ms var(--ease-soft);
+}
+
+#age-gate[data-open="true"] {
+  opacity: 1;
+}
+
+#age-gate[hidden] {
+  display: none;
+}
+
+.gate__panel {
+  width: min(520px, 100%);
+  text-align: center;
+  display: grid;
+  gap: 22px;
+  justify-items: center;
+}
+
+.gate__panel .h3 {
+  color: var(--bone);
+}
+
+.gate__actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+.gate__deny {
+  font-size: var(--fs-small);
+  color: var(--mist);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 2px;
+}
+
+.gate__deny:hover {
+  color: var(--bone);
+}
+
+.gate__note {
+  font-size: var(--fs-micro);
+  color: var(--mist-dim);
+  max-width: 40ch;
+  line-height: 1.7;
+}
+
+.gate__refused {
+  display: none;
+  color: var(--mist);
+  font-size: var(--fs-small);
+  max-width: 34ch;
+}
+
+#age-gate[data-refused="true"] .gate__ask {
+  display: none;
+}
+
+#age-gate[data-refused="true"] .gate__refused {
+  display: block;
+}
+
+/* ---------- Media, duotone treatment ----------
+   Every photograph is mapped into the brand so stock reads as one shoot. */
+
+.media {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background-color: var(--ink-850);
+  background-image: var(--duo-grad);
+  isolation: isolate;
+}
+
+/* True duotone in a single GPU filter: strip colour, re-tint through
+   sepia, then rotate that tint onto the brand hue. This is what makes
+   library photography read as one commissioned shoot. */
+.media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Luminance from the photograph, hue and saturation from the gradient
+     underneath. This is what makes library images read as one shoot. */
+  mix-blend-mode: luminosity;
+  filter: var(--duo-tone);
+  transform: scale(1.02);
+  transition: transform 1200ms var(--ease-out), filter 700ms var(--ease-soft);
+}
+
+.media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--ink-950) 72%, transparent),
+    transparent 62%
+  );
+}
+
+/* Hover lifts the image toward the light. It stays inside the palette. */
+.media--hover:hover img {
+  transform: scale(1.06);
+  filter: var(--duo-tone-hover);
+}
+
+/* ---------- Reveals ---------- */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition: opacity var(--dur-reveal) var(--ease-out),
+    transform var(--dur-reveal) var(--ease-out);
+  transition-delay: var(--delay, 0ms);
+}
+
+[data-reveal="in"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Media reveal: clip from the bottom, with the image settling from 1.08
+   to 1.0 so it lands rather than slides. */
+[data-reveal-media] {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1000ms var(--ease-out);
+  transition-delay: var(--delay, 0ms);
+}
+
+[data-reveal-media] img {
+  transform: scale(1.1);
+}
+
+[data-reveal-media="in"] {
+  clip-path: inset(0 0 0 0);
+}
+
+[data-reveal-media="in"] img {
+  transform: scale(1.02);
+}
+
+/* Word-by-word display reveal */
+.words {
+  display: block;
+}
+
+.words .word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.09em;
+  margin-bottom: -0.09em;
+}
+
+.words .word > i {
+  display: inline-block;
+  font-style: inherit;
+  transform: translate3d(0, 106%, 0);
+  transition: transform 900ms var(--ease-out);
+  transition-delay: var(--delay, 0ms);
+}
+
+.words[data-reveal="in"] .word > i {
+  transform: none;
+}
+
+/* ---------- Form ---------- */
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field label {
+  font-size: var(--fs-small);
+  color: var(--text);
+  font-weight: 500;
+}
+
+.field input {
+  width: 100%;
+  padding: 0.95em 1em;
+  background: var(--bg-inset);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  color: var(--text);
+  transition: border-color var(--dur-ui) var(--ease-soft);
+}
+
+.field input::placeholder {
+  color: var(--text-3);
+}
+
+.field input:focus-visible {
+  border-color: var(--accent-lit);
+  outline: 2px solid color-mix(in srgb, var(--accent-lit) 40%, transparent);
+  outline-offset: 1px;
+}
+
+.field .hint {
+  font-size: var(--fs-small);
+  color: var(--text-2);
+}
+
+.field .error {
+  font-size: var(--fs-small);
+  color: var(--danger);
+  min-height: 1.4em;
+}
+
+.field[data-invalid="true"] input {
+  border-color: var(--danger);
+}
+
+.form__status {
+  font-size: var(--fs-small);
+  color: var(--text-2);
+  min-height: 1.6em;
+}
+
+/* Button loading state */
+.btn[data-state="loading"] {
+  pointer-events: none;
+  opacity: 0.72;
+}
+
+.btn[data-state="loading"] .btn__label::after {
+  content: "";
+  display: inline-block;
+  width: 1em;
+  text-align: left;
+  animation: dots 1.2s steps(4, end) infinite;
+}
+
+@keyframes dots {
+  0% { content: ""; }
+  25% { content: "."; }
+  50% { content: ".."; }
+  75% { content: "..."; }
+}
+
+/* ---------- Scroll progress mark ---------- */
+
+.progress {
+  position: fixed;
+  right: calc(var(--gutter) * 0.6);
+  bottom: calc(var(--gutter) * 0.6);
+  z-index: var(--z-nav);
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transition: opacity 400ms var(--ease-soft);
+}
+
+.progress[data-visible="true"] {
+  opacity: 1;
+}
+
+.progress svg {
+  width: 42px;
+  height: 42px;
+  transform: rotate(-90deg);
+}
+
+.progress circle {
+  fill: none;
+  stroke-width: 1;
+}
+
+.progress .track {
+  stroke: var(--line-strong);
+}
+
+.progress .bar {
+  stroke: var(--accent-lit);
+  stroke-dasharray: 126;
+  stroke-dashoffset: calc(126 - 126 * var(--p, 0));
+}
+
+@media (max-width: 640px) {
+  .progress {
+    display: none;
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-reveal],
+  [data-reveal-media],
+  .words .word > i {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+
+  .grain {
+    animation: none;
+  }
+}

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ashmont Gin | Distilled from the cold</title>
+<meta name="description" content="A London Dry gin cut at 45.2 percent. Seven botanicals, three days in cold maceration, distilled on the North Atlantic coast.">
+<meta name="theme-color" content="#04080f" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#eef0f5" media="(prefers-color-scheme: light)">
+<link rel="canonical" href="https://ashmontgin.com/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ashmont Gin">
+<meta property="og:title" content="Ashmont Gin | Distilled from the cold">
+<meta property="og:description" content="Seven botanicals, three days in cold maceration, cut at 45.2 percent.">
+<meta property="og:url" content="https://ashmontgin.com/">
+<meta property="og:image" content="https://ashmontgin.com/assets/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2304080f'/%3E%3Cpath d='M14 5h4v5.6l3.4 4.1c.8 1 1.2 2.2 1.2 3.4V26a1 1 0 0 1-1 1H10.4a1 1 0 0 1-1-1v-7.9c0-1.2.4-2.4 1.2-3.4L14 10.6z' fill='%232554d8'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://picsum.photos" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/BodoniModa-normal-400700-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/Archivo-normal-300700-latin.woff2" crossorigin>
+
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/sections.css">
+
+<script>
+  // Applied before paint so there is no theme flash.
+  document.documentElement.classList.remove('no-js');
+  // A scroll-driven page must always start at the first beat.
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  try {
+    var t = localStorage.getItem('ashmont-theme');
+    if (t) document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Ashmont London Dry Gin",
+  "brand": { "@type": "Brand", "name": "Ashmont" },
+  "description": "A London Dry gin cut at 45.2 percent. Seven botanicals, three days in cold maceration.",
+  "category": "Gin",
+  "audience": { "@type": "PeopleAudience", "suggestedMinAge": 18 }
+}
+</script>
+</head>
+
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ============ Preloader ============ -->
+<div id="preloader" role="status" aria-live="polite" aria-label="Loading">
+  <div class="pre__center">
+    <div class="pre__mark" aria-hidden="true">
+      <span style="--i:0">A</span><span style="--i:1">S</span><span style="--i:2">H</span><span style="--i:3">M</span><span style="--i:4">O</span><span style="--i:5">N</span><span style="--i:6">T</span>
+    </div>
+    <div class="pre__bar"><i id="pre-bar"></i></div>
+  </div>
+  <div class="pre__foot label">
+    <span>London Dry Gin</span>
+    <span class="num" id="pre-count">000</span>
+  </div>
+</div>
+
+<!-- ============ Age gate ============ -->
+<div id="age-gate" hidden>
+  <div class="gate__panel">
+    <div class="gate__ask">
+      <p class="label" style="margin-bottom:18px">Ashmont</p>
+      <h2 class="h3" style="margin-bottom:18px">Are you of legal drinking age in your country?</h2>
+      <div class="gate__actions">
+        <button class="btn btn--primary" id="gate-yes" type="button"><span class="btn__label">Yes, enter</span></button>
+        <button class="gate__deny" id="gate-no" type="button">No</button>
+      </div>
+      <p class="gate__note" style="margin-top:22px">We ask once. Your answer stays on this device and is never sent anywhere.</p>
+    </div>
+    <p class="gate__refused">Thank you for being honest. Please come back when you are old enough to drink where you live.</p>
+  </div>
+</div>
+
+<!-- ============ Fixed atmosphere ============ -->
+<div id="scene" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="cursor" aria-hidden="true">
+  <div class="cursor__ring"></div>
+  <div class="cursor__dot"></div>
+</div>
+
+<!-- ============ Navigation ============ -->
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a class="wordmark" href="#top" data-magnetic>Ashmont</a>
+
+    <nav class="nav__links" aria-label="Sections">
+      <a class="nav__link" href="#botanicals">Botanicals</a>
+      <a class="nav__link" href="#distillation">Distillation</a>
+      <a class="nav__link" href="#serves">Serves</a>
+      <a class="nav__link" href="#provenance">Provenance</a>
+    </nav>
+
+    <div class="nav__right">
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light appearance">
+        <!-- Phosphor Icons (MIT), inlined so there is no runtime icon dependency -->
+        <svg class="icon-moon" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M233.54,142.23a8,8,0,0,0-8-2,88.08,88.08,0,0,1-109.8-109.8,8,8,0,0,0-10-10,104.84,104.84,0,0,0-52.91,37A104,104,0,0,0,136,224a103.09,103.09,0,0,0,62.52-20.88,104.84,104.84,0,0,0,37-52.91A8,8,0,0,0,233.54,142.23ZM188.9,190.34A88,88,0,0,1,65.66,67.11a89,89,0,0,1,31.4-26A106,106,0,0,0,96,56,104.11,104.11,0,0,0,200,160a106,106,0,0,0,14.92-1.06A89,89,0,0,1,188.9,190.34Z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm72,88a64,64,0,1,1-64-64A64.07,64.07,0,0,1,192,128Zm-16,0a48,48,0,1,0-48,48A48.05,48.05,0,0,0,176,128ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z"/></svg>
+      </button>
+      <a class="btn btn--primary" href="#find" data-magnetic><span class="btn__label">Find a bottle</span></a>
+      <button class="nav__menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="nav__drawer" id="drawer" data-open="false">
+  <a href="#botanicals" style="--i:0">Botanicals</a>
+  <a href="#distillation" style="--i:1">Distillation</a>
+  <a href="#serves" style="--i:2">Serves</a>
+  <a href="#provenance" style="--i:3">Provenance</a>
+  <a class="btn btn--primary" href="#find" style="--i:4"><span class="btn__label">Find a bottle</span></a>
+</div>
+
+<!-- ============ Smooth scroll wrapper ============ -->
+<div id="viewport">
+<div id="content">
+<main id="main">
+
+  <!-- ============ 1. HERO ============ -->
+  <section class="hero" id="top">
+    <div class="hero__inner">
+      <div class="hero__copy">
+        <h1 class="display hero__title words" data-words data-reveal>Distilled from the <em>cold</em>.</h1>
+        <p class="lead hero__lead" data-reveal style="--delay:420ms">
+          A London Dry gin cut at 45.2 percent. Seven botanicals, three days in cold maceration.
+        </p>
+        <div class="hero__actions" data-reveal style="--delay:560ms">
+          <a class="btn btn--primary" href="#find" data-magnetic><span class="btn__label">Find a bottle</span></a>
+          <a class="btn btn--ghost" href="#distillation" data-magnetic><span class="btn__label">The distillation</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2. MANIFESTO ============ -->
+  <section class="manifesto" id="manifesto">
+    <div class="manifesto__sticky">
+      <div class="manifesto__body">
+        <p class="words" data-words data-reveal data-manifesto>
+          We could have made this warmer. Rounder. Easier to like on the first sip. We made it colder instead.
+        </p>
+        <div class="manifesto__sign" data-reveal>
+          <span class="label">Máire Ó Dochartaigh</span>
+          <span class="label">Head Distiller</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3. BOTANICALS - horizontal pan ============ -->
+  <section class="pan" id="botanicals" data-pan>
+    <div class="pan__sticky">
+      <div class="pan__head">
+        <h2 class="h2" data-reveal>Seven botanicals.<br>No more.</h2>
+        <p class="pan__count"><span data-pan-index>01</span> of 07</p>
+      </div>
+
+      <div class="pan__track" data-pan-track>
+
+        <article class="botanical">
+          <figure class="media media--hover" data-reveal-media>
+            <img src="https://picsum.photos/seed/ashmont-juniper-berries/600/760" width="600" height="760" alt="Juniper berries on the branch" loading="lazy" decoding="async">
+          </figure>
+          <div>
+            <h3 class="botanical__name">Juniper</h3>
+            <p class="botanical__note">The spine. Resinous, green, and deliberately loud so nothing behind it has to shout.</p>
+            <span class="botanical__origin">Macedonia</span>
+          </div>
+        </article>
+
+        <article class="botanical">
+          <figure class="media media--hover" data-reveal-media>
+            <img src="https://picsum.photos/seed/ashmont-coriander-seed/600/760" width="600" height="760" alt="Coriander seed" loading="lazy" decoding="async">
+          </figure>
+          <div>
+            <h3 class="botanical__name">Coriander seed</h3>
+            <p class="botanical__note">Warm citrus underneath the juniper. It stops the gin reading as purely cold.</p>
+            <span class="botanical__origin">Bulgaria</span>
+          </div>
+        </article>
+
+        <article class="botanical">
+          <figure class="media media--hover" data-reveal-media>
+            <img src="https://picsum.photos/seed/ashmont-angelica-root/600/760" width="600" height="760" alt="Dried angelica root" loading="lazy" decoding="async">
+          </figure>
+          <div>
+            <h3 class="botanical__name">Angelica root</h3>
+            <p class="botanical__note">Dry, earthy, faintly bitter. The reason the finish holds instead of fading.</p>
+            <span class="botanical__origin">Saxony</span>
+          </div>
+        </article>
+
+        <article class="botanical">
+          <figure class="media media--hover" data-reveal-media>
+            <img src="https://picsum.photos/seed/ashmont-orris-root-iris/600/760" width="600" height="760" alt="Orris root" loading="lazy" decoding="async">
+          </figure>
+          <div>
+            <h3 class="botanical__name">Orris root</h3>
+            <p class="botanical__note">Ground from iris rhizome aged five years. It binds the other six together.</p>
+            <span class="botanical__origin">Tuscany</span>
+          </div>
+        </article>
+
+        <article class="botanical">
+          <figure class="media media--hover" data-reveal-media>
+            <img src="https://picsum.photos/seed/ashmont-sea-buckthorn/600/760" width="600" height="760" alt="Sea buckthorn berries" loading="lazy" decoding="async">
+          </figure>
+          <div>
+            <h3 class="botanical__name">Sea buckthorn</h3>
+            <p class="botanical__note">Sharp orange acidity picked off the dunes. Our only source of brightness.</p>
+            <span class="botanical__origin">Ashmont headland</span>
+          </div>
+        </article>
+
+        <article class="botanical">
+          <figure class="media media--hover" data-reveal-media>
+            <img src="https://picsum.photos/seed/ashmont-bladderwrack-seaweed/600/760" width="600" height="760" alt="Bladderwrack seaweed on wet rock" loading="lazy" decoding="async">
+          </figure>
+          <div>
+            <h3 class="botanical__name">Bladderwrack</h3>
+            <p class="botanical__note">Cut at low tide and dried the same day. It carries salt without tasting of the sea.</p>
+            <span class="botanical__origin">Ashmont headland</span>
+          </div>
+        </article>
+
+        <article class="botanical">
+          <figure class="media media--hover" data-reveal-media>
+            <img src="https://picsum.photos/seed/ashmont-pink-peppercorn/600/760" width="600" height="760" alt="Pink peppercorns" loading="lazy" decoding="async">
+          </figure>
+          <div>
+            <h3 class="botanical__name">Pink peppercorn</h3>
+            <p class="botanical__note">Added last and in small weight. A little heat at the very end of the sip.</p>
+            <span class="botanical__origin">Réunion</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4. DISTILLATION - sticky stack ============ -->
+  <section class="section stack" id="distillation" data-stack>
+    <div class="shell stack__intro">
+      <div class="sec-head" data-reveal>
+        <p class="label">The distillation</p>
+        <h2 class="h2">Four decisions, and the last one is made by nose.</h2>
+      </div>
+    </div>
+
+    <article class="stage" data-stage>
+      <div class="stage__card">
+        <div class="stage__grid">
+          <figure class="media stage__media" data-reveal-media>
+            <img src="https://picsum.photos/seed/ashmont-cold-maceration-steel/900/700" width="900" height="700" alt="Botanicals steeping in a chilled steel vessel" loading="lazy" decoding="async">
+          </figure>
+          <div>
+            <h3 class="h3 stage__title">Macerate</h3>
+            <p class="body">Six of the seven botanicals sit in neutral grain spirit for three days at four degrees. Cold pulls the oils out slowly. Heat would be faster and would take the top notes with it.</p>
+            <div class="stage__temp">
+              <div><span class="label">Temperature</span><span class="num">4 &deg;C</span></div>
+              <div><span class="label">Duration</span><span class="num">72 hours</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="stage" data-stage>
+      <div class="stage__card">
+        <div class="stage__grid">
+          <figure class="media stage__media" data-reveal-media>
+            <img src="https://picsum.photos/seed/ashmont-copper-still-column/900/700" width="900" height="700" alt="Copper still and column" loading="lazy" decoding="async">
+          </figure>
+          <div>
+            <h3 class="h3 stage__title">Vapour infuse</h3>
+            <p class="body">The seventh botanical never touches the liquid. Bladderwrack goes into a basket in the neck of the still and the vapour passes through it on the way out.</p>
+            <div class="stage__temp">
+              <div><span class="label">Still</span><span class="num">450 L copper</span></div>
+              <div><span class="label">Run time</span><span class="num">7 hours</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="stage" data-stage>
+      <div class="stage__card">
+        <div class="stage__grid">
+          <figure class="media stage__media" data-reveal-media>
+            <img src="https://picsum.photos/seed/ashmont-spirit-safe-cut/900/700" width="900" height="700" alt="Spirit running through the safe" loading="lazy" decoding="async">
+          </figure>
+          <div>
+            <h3 class="h3 stage__title">Cut</h3>
+            <p class="body">The heads come off early and the tails come off late, and both are judged by smell rather than by clock. It costs us roughly a fifth of every run.</p>
+            <div class="stage__temp">
+              <div><span class="label">Heart kept</span><span class="num">About 80&percnt;</span></div>
+              <div><span class="label">Judged by</span><span class="num">Nose</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="stage" data-stage>
+      <div class="stage__card">
+        <div class="stage__grid">
+          <figure class="media stage__media" data-reveal-media>
+            <img src="https://picsum.photos/seed/ashmont-steel-resting-tanks/900/700" width="900" height="700" alt="Steel resting tanks" loading="lazy" decoding="async">
+          </figure>
+          <div>
+            <h3 class="h3 stage__title">Rest</h3>
+            <p class="body">Three weeks in steel before it is cut with borehole water and bottled. Nothing is chill filtered, so a cold bottle will haze. That is the oils staying where they belong.</p>
+            <div class="stage__temp">
+              <div><span class="label">Resting</span><span class="num">21 days</span></div>
+              <div><span class="label">Filtration</span><span class="num">None</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============ 5. THE BOTTLE - bento ============ -->
+  <section class="section" id="bottle">
+    <div class="shell">
+      <div class="sec-head" data-reveal>
+        <h2 class="h2">The bottle is heavy on purpose.</h2>
+        <p class="body">Blue glass to keep light off the oils, a deep punt so it sits cold in the hand, and a label printed one colour on uncoated stock.</p>
+      </div>
+
+      <div class="bento">
+        <figure class="bento__cell bento__cell--media media media--hover" data-reveal-media>
+          <img src="https://picsum.photos/seed/ashmont-blue-glass-bottle-macro/900/1100" width="900" height="1100" alt="Detail of the blue glass bottle shoulder" loading="lazy" decoding="async">
+        </figure>
+
+        <div class="bento__cell bento__cell--accent" data-reveal>
+          <p class="bento__figure">45.2<sup>&percnt; ABV</sup></p>
+          <p>Bottled at strength and never watered down for softness. It holds its shape under tonic and under ice.</p>
+        </div>
+
+        <div class="bento__cell bento__cell--third" data-reveal style="--delay:80ms">
+          <p class="bento__figure">50<sup>cl</sup></p>
+          <p>Roughly fourteen martinis.</p>
+        </div>
+
+        <div class="bento__cell bento__cell--third bento__cell--pattern" data-reveal style="--delay:160ms">
+          <p class="bento__figure">72<sup>hrs</sup></p>
+          <p>Cold maceration before the run.</p>
+        </div>
+
+        <div class="bento__cell bento__cell--third" data-reveal style="--delay:240ms">
+          <p class="bento__figure">7</p>
+          <p>Botanicals, counted honestly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 6. SERVES - accordion ============ -->
+  <section class="section" id="serves">
+    <div class="shell">
+      <div class="sec-head" data-reveal>
+        <h2 class="h2">Three ways we drink it.</h2>
+      </div>
+
+      <div class="serves" data-accordion>
+
+        <div class="serve" data-serve data-open="true">
+          <div class="serve__bg" aria-hidden="true">
+            <img src="https://picsum.photos/seed/ashmont-martini-coupe-bar/1400/700" width="1400" height="700" alt="" loading="lazy" decoding="async">
+          </div>
+          <button class="serve__head" type="button" aria-expanded="true" aria-controls="serve-1">
+            <span class="serve__name">The Cold Martini</span>
+            <span class="serve__tag">Stirred, no garnish but lemon oil</span>
+          </button>
+          <div class="serve__panel" id="serve-1">
+            <div>
+              <div class="serve__inner">
+                <ol class="serve__build">
+                  <li><span class="num">70 ml</span><span>Ashmont, straight from the freezer</span></li>
+                  <li><span class="num">10 ml</span><span>Dry vermouth, opened this week</span></li>
+                  <li><span class="num">20 sec</span><span>Stirred over block ice, not shaken</span></li>
+                  <li><span class="num">1 strip</span><span>Lemon peel, oils expressed then discarded</span></li>
+                </ol>
+                <p class="body">Keep the bottle in the freezer and the glass in there with it. At 45.2 percent it will not freeze, and the dilution you skip is the dilution you do not want.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="serve" data-serve data-open="false">
+          <div class="serve__bg" aria-hidden="true">
+            <img src="https://picsum.photos/seed/ashmont-highball-tonic-ice/1400/700" width="1400" height="700" alt="" loading="lazy" decoding="async">
+          </div>
+          <button class="serve__head" type="button" aria-expanded="false" aria-controls="serve-2">
+            <span class="serve__name">Fog and Tonic</span>
+            <span class="serve__tag">Tall, heavy ice, grapefruit</span>
+          </button>
+          <div class="serve__panel" id="serve-2">
+            <div>
+              <div class="serve__inner">
+                <ol class="serve__build">
+                  <li><span class="num">50 ml</span><span>Ashmont</span></li>
+                  <li><span class="num">125 ml</span><span>Light tonic, poured down a bar spoon</span></li>
+                  <li><span class="num">Fill</span><span>Cubed ice to the very top of the glass</span></li>
+                  <li><span class="num">1 wedge</span><span>Pink grapefruit, squeezed and dropped</span></li>
+                </ol>
+                <p class="body">Use more ice than feels reasonable. A half filled glass melts fast and turns the drink flat before you are halfway down it.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="serve" data-serve data-open="false">
+          <div class="serve__bg" aria-hidden="true">
+            <img src="https://picsum.photos/seed/ashmont-negroni-rocks-dark/1400/700" width="1400" height="700" alt="" loading="lazy" decoding="async">
+          </div>
+          <button class="serve__head" type="button" aria-expanded="false" aria-controls="serve-3">
+            <span class="serve__name">Ashmont Negroni</span>
+            <span class="serve__tag">Equal parts, orange, one big cube</span>
+          </button>
+          <div class="serve__panel" id="serve-3">
+            <div>
+              <div class="serve__inner">
+                <ol class="serve__build">
+                  <li><span class="num">30 ml</span><span>Ashmont</span></li>
+                  <li><span class="num">30 ml</span><span>Campari</span></li>
+                  <li><span class="num">30 ml</span><span>Sweet vermouth</span></li>
+                  <li><span class="num">1 cube</span><span>Large clear ice, built in the glass</span></li>
+                </ol>
+                <p class="body">The bladderwrack sits well under Campari. It reads as salt at the back of the drink and pulls the bitterness forward instead of fighting it.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 7. PROVENANCE - parallax zoom ============ -->
+  <section class="provenance" id="provenance">
+    <div class="provenance__bg" aria-hidden="true" data-parallax>
+      <img src="https://picsum.photos/seed/ashmont-north-atlantic-headland-fog/1800/1200" width="1800" height="1200" alt="" loading="lazy" decoding="async">
+    </div>
+    <div class="provenance__copy">
+      <h2 class="h2" data-reveal>A headland that gets the weather first.</h2>
+      <p class="body lead" data-reveal style="--delay:120ms">
+        The distillery sits on nine acres of exposed coast. Two of the seven botanicals are picked
+        within walking distance of the still, and the water is drawn from a borehole under the same ground.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ 8. FIND A BOTTLE ============ -->
+  <section class="section" id="find">
+    <div class="shell">
+      <div class="find__grid">
+
+        <div>
+          <div class="sec-head" data-reveal>
+            <h2 class="h2">Find a bottle.</h2>
+            <p class="body">We release in small batches and they move quickly. These shops hold stock most weeks.</p>
+          </div>
+
+          <ul class="stockists" data-reveal style="--delay:120ms">
+            <li class="stockist" data-magnetic-soft>
+              <span class="stockist__name">Vellum &amp; Vine</span>
+              <span class="stockist__city">Edinburgh</span>
+            </li>
+            <li class="stockist" data-magnetic-soft>
+              <span class="stockist__name">The Bottle Library</span>
+              <span class="stockist__city">Bristol</span>
+            </li>
+            <li class="stockist" data-magnetic-soft>
+              <span class="stockist__name">Kite &amp; Anchor</span>
+              <span class="stockist__city">Dublin</span>
+            </li>
+            <li class="stockist" data-magnetic-soft>
+              <span class="stockist__name">Nordhavn Spirits</span>
+              <span class="stockist__city">Copenhagen</span>
+            </li>
+            <li class="stockist" data-magnetic-soft>
+              <span class="stockist__name">Aster Bottle Shop</span>
+              <span class="stockist__city">Brooklyn</span>
+            </li>
+          </ul>
+        </div>
+
+        <form class="find__form" id="drop-form" novalidate data-reveal style="--delay:200ms">
+          <h3 class="h3">Batch nineteen, this autumn</h3>
+          <p class="body" style="font-size:var(--fs-small)">One message when a batch is bottled. Nothing else, and you can leave in one click.</p>
+
+          <div class="field" id="field-email">
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email" autocomplete="email" placeholder="you@example.com" required aria-describedby="email-hint email-error">
+            <span class="hint" id="email-hint">Used only to tell you a batch is ready.</span>
+            <span class="error" id="email-error" role="alert"></span>
+          </div>
+
+          <button class="btn btn--primary" type="submit" data-magnetic>
+            <span class="btn__label">Tell me when it lands</span>
+          </button>
+          <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ Footer ============ -->
+<footer class="footer">
+  <div class="shell">
+    <div class="footer__grid">
+      <div class="footer__col">
+        <p class="wordmark" style="margin-bottom:14px">Ashmont</p>
+        <p class="body" style="font-size:var(--fs-small);max-width:34ch">
+          Ashmont Distillery, Cluain Head, Co. Donegal. Distilled, cut and bottled on site.
+        </p>
+      </div>
+      <div class="footer__col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a class="link" href="#botanicals">Botanicals</a></li>
+          <li><a class="link" href="#distillation">Distillation</a></li>
+          <li><a class="link" href="#serves">Serves</a></li>
+          <li><a class="link" href="#provenance">Provenance</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a class="link" href="mailto:hello@ashmontgin.com">hello@ashmontgin.com</a></li>
+          <li><a class="link" href="mailto:trade@ashmontgin.com">Trade and on-premise</a></li>
+          <li><a class="link" href="#find">Find a bottle</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="footer__mark" aria-hidden="true">Ashmont</p>
+
+    <div class="footer__legal">
+      <span>&copy; 2026 Ashmont Distillery. Please drink responsibly.</span>
+      <span>Do not share this site with anyone under legal drinking age.</span>
+    </div>
+  </div>
+</footer>
+
+</div><!-- /#content -->
+</div><!-- /#viewport -->
+
+<div class="progress" id="progress" data-visible="false" aria-hidden="true">
+  <svg viewBox="0 0 44 44">
+    <circle class="track" cx="22" cy="22" r="20"></circle>
+    <circle class="bar" cx="22" cy="22" r="20"></circle>
+  </svg>
+</div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,828 @@
+/* ============================================================
+   ASHMONT GIN - Section layouts
+   Eight layout families, each used exactly once. See DESIGN.md 8.
+   ============================================================ */
+
+/* ============================================================
+   1. HERO - scroll-pinned 3D
+   ============================================================ */
+
+.hero {
+  position: relative;
+  min-height: 100dvh;
+  display: grid;
+  align-content: end;
+  padding-top: var(--nav-h);
+  padding-bottom: clamp(56px, 9vh, 104px);
+  z-index: var(--z-content);
+}
+
+/* On a phone the bottle sits above the copy rather than beside it, so the
+   lower half gets a ground scrim. This is a contrast guarantee, not a
+   decoration: the headline must stay legible over any frame of the scene. */
+@media (max-width: 900px) {
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 34% 0 0 0;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(
+      to top,
+      var(--bg) 26%,
+      color-mix(in srgb, var(--bg) 82%, transparent) 52%,
+      transparent 100%
+    );
+  }
+}
+
+.hero__inner {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* `ch` here would resolve against the body font, not the display font,
+   which collapses this column to about 120px on a phone. Use a real
+   measure instead. */
+.hero__copy {
+  max-width: min(100%, 34rem);
+}
+
+.hero__title {
+  margin-bottom: 0.34em;
+}
+
+.hero__lead {
+  max-width: 34ch;
+  margin-bottom: 2.2em;
+}
+
+.hero__actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 1024px) {
+  .hero__inner {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: end;
+  }
+  .hero__copy {
+    grid-column: 1 / span 6;
+    max-width: none;
+  }
+}
+
+/* ============================================================
+   2. MANIFESTO - full-width kinetic type, pinned while it reads
+   ============================================================ */
+
+/* Taller than the viewport so the sticky child has room to hold while
+   the sentence lights up word by word. */
+.manifesto {
+  position: relative;
+  height: 260vh;
+}
+
+@media (max-width: 760px) {
+  .manifesto {
+    height: 190vh;
+  }
+}
+
+.manifesto__sticky {
+  position: sticky;
+  top: 0;
+  min-height: 100dvh;
+  display: grid;
+  align-content: center;
+  padding-block: 12vh;
+}
+
+.manifesto__body {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.manifesto p {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 88;
+  font-size: clamp(1.9rem, 4.6vw, 4.1rem);
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+  max-width: 20ch;
+  text-wrap: balance;
+}
+
+/* Words that have not been read yet sit dim. Reading is the animation. */
+.manifesto .word > i {
+  color: var(--text-3);
+  transition: color 420ms var(--ease-soft);
+}
+
+.manifesto .word[data-lit="true"] > i {
+  color: var(--text);
+}
+
+.manifesto__sign {
+  margin-top: clamp(32px, 5vh, 64px);
+  display: flex;
+  gap: 14px;
+  align-items: baseline;
+  color: var(--text-3);
+  font-size: var(--fs-small);
+}
+
+/* ============================================================
+   3. BOTANICALS - horizontal scroll pan
+   ============================================================ */
+
+.pan {
+  position: relative;
+  /* --pan-dist is measured and written by JS on resize */
+  height: calc(100dvh + var(--pan-dist, 0px));
+}
+
+.pan__sticky {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  overflow: hidden;
+  display: grid;
+  /* minmax(0, 1fr), not 1fr: a bare 1fr cannot shrink below the cards'
+     min-content height, which pushes them past the pinned viewport and
+     clips them at the bottom. */
+  grid-template-rows: auto minmax(0, 1fr);
+  /* The track is wider than the screen by design. Without an explicit
+     minmax(0, 1fr) column the auto column sizes to the track's full
+     width, and the heading gets centred inside a 2600px column instead
+     of sitting on the page gutter. */
+  grid-template-columns: minmax(0, 1fr);
+  padding-top: calc(var(--nav-h) + 2.4vh);
+  padding-bottom: 5vh;
+}
+
+.pan__head {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: clamp(18px, 2.6vh, 36px);
+}
+
+/* The pinned head shares the viewport with the cards, so it runs a step
+   below the page's h2 scale. */
+.pan__head .h2 {
+  font-size: clamp(1.7rem, 3.4vw, 3.1rem);
+}
+
+.pan__count {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.pan__track {
+  display: flex;
+  align-items: stretch;
+  gap: clamp(16px, 2vw, 34px);
+  padding-inline: var(--gutter);
+  will-change: transform;
+}
+
+.botanical {
+  flex: 0 0 clamp(230px, 25vw, 330px);
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 20px;
+}
+
+.botanical .media {
+  height: 100%;
+  min-height: 0;
+}
+
+.botanical__name {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 36;
+  font-size: 1.5rem;
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+
+.botanical__note {
+  font-size: var(--fs-small);
+  color: var(--text-2);
+  line-height: 1.55;
+}
+
+.botanical__origin {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-top: 10px;
+  display: block;
+}
+
+/* Mobile: the pan becomes a snap carousel, no pinning */
+@media (max-width: 900px) {
+  .pan {
+    height: auto;
+  }
+  .pan__sticky {
+    position: static;
+    height: auto;
+    overflow: visible;
+    padding-block: var(--section-y);
+  }
+  .pan__track {
+    transform: none !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    /* Without this the first card snaps flush to the edge and eats the
+       page gutter. */
+    scroll-padding-inline-start: var(--gutter);
+    scrollbar-width: none;
+    padding-bottom: 8px;
+  }
+  .pan__track::-webkit-scrollbar {
+    display: none;
+  }
+  .botanical {
+    flex-basis: min(74vw, 300px);
+    scroll-snap-align: start;
+  }
+  .botanical .media {
+    min-height: 300px;
+  }
+}
+
+/* ============================================================
+   4. DISTILLATION - sticky stack
+   ============================================================ */
+
+.stack {
+  position: relative;
+}
+
+.stack__intro {
+  padding-bottom: clamp(40px, 7vh, 90px);
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  min-height: 100dvh;
+  display: grid;
+  align-content: center;
+  padding-top: var(--nav-h);
+}
+
+.stage__card {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  will-change: transform, opacity;
+}
+
+.stage__grid {
+  display: grid;
+  gap: clamp(24px, 4vw, 64px);
+  align-items: center;
+  background: color-mix(in srgb, var(--bg-raised) 95%, transparent);
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: clamp(24px, 4vw, 56px);
+  box-shadow: var(--shadow);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .stage__grid {
+    background: var(--bg-raised);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+@media (min-width: 860px) {
+  .stage__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .stage:nth-child(even) .stage__media {
+    order: -1;
+  }
+}
+
+.stage__media {
+  aspect-ratio: 4 / 3;
+}
+
+.stage__title {
+  margin-bottom: 0.5em;
+}
+
+.stage__temp {
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.stage__temp div {
+  display: grid;
+  gap: 2px;
+}
+
+.stage__temp .num {
+  font-size: 1.05rem;
+  color: var(--text);
+}
+
+@media (max-width: 859px) {
+  .stage {
+    position: static;
+    min-height: 0;
+    padding-top: 0;
+    margin-bottom: 20px;
+  }
+  .stage__card {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* ============================================================
+   5. THE BOTTLE - asymmetric bento
+   ============================================================ */
+
+@media (min-width: 1100px) {
+  /* The right of the frame is deliberately empty: that is where the 3D
+     bottle stands at this beat. The spec sheet sits beside the object. */
+  #bottle .sec-head,
+  #bottle .bento {
+    max-width: 60%;
+  }
+}
+
+/* 5 cells for 5 pieces of content. One image, one headline figure,
+   three supporting figures. No empty tiles. */
+.bento {
+  display: grid;
+  gap: clamp(12px, 1.4vw, 20px);
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  margin-top: clamp(40px, 6vh, 76px);
+}
+
+.bento__cell {
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background-color: color-mix(in srgb, var(--bg-raised) 88%, transparent);
+  padding: clamp(20px, 2.4vw, 34px);
+  display: grid;
+  align-content: space-between;
+  gap: 28px;
+  min-height: 190px;
+}
+
+/* Cell 1: the media, no padding, spans two rows */
+.bento__cell--media {
+  grid-column: span 6;
+  grid-row: span 2;
+  padding: 0;
+  min-height: 420px;
+  border: 0;
+}
+
+.bento__cell--media .media {
+  height: 100%;
+}
+
+/* Cell 2: sapphire gradient, the headline number */
+.bento__cell--accent {
+  grid-column: span 6;
+  background:
+    radial-gradient(120% 140% at 8% 0%, color-mix(in srgb, var(--sapphire) 42%, transparent), transparent 62%),
+    linear-gradient(160deg, color-mix(in srgb, var(--sapphire-deep) 55%, transparent), transparent 70%);
+  border-color: color-mix(in srgb, var(--sapphire) 34%, transparent);
+}
+
+/* Cell 5: engraved-line pattern, gives the grid a third texture */
+.bento__cell--pattern {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--line) 0 1px,
+    transparent 1px 9px
+  );
+}
+
+.bento__cell--third {
+  grid-column: span 2;
+}
+
+.bento__figure {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 72;
+  font-size: clamp(2.6rem, 4.6vw, 4.2rem);
+  line-height: 0.94;
+  letter-spacing: -0.03em;
+}
+
+.bento__figure sup {
+  font-size: 0.34em;
+  vertical-align: super;
+  letter-spacing: 0;
+  margin-left: 0.16em;
+  font-family: var(--font-mono);
+  color: var(--text-2);
+}
+
+.bento__cell p {
+  font-size: var(--fs-small);
+  color: var(--text-2);
+  max-width: 32ch;
+}
+
+@media (max-width: 860px) {
+  .bento {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .bento__cell--media {
+    grid-column: span 6;
+    grid-row: auto;
+    min-height: 320px;
+  }
+  .bento__cell--accent {
+    grid-column: span 6;
+  }
+  .bento__cell--third {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 560px) {
+  .bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .bento__cell--media,
+  .bento__cell--accent {
+    grid-column: span 2;
+  }
+  .bento__cell--third {
+    grid-column: span 1;
+  }
+  /* Three thirds into a two-up grid: the last one takes the full row. */
+  .bento__cell--third:last-child {
+    grid-column: span 2;
+  }
+  .bento__cell {
+    min-height: 150px;
+    gap: 18px;
+  }
+}
+
+/* ============================================================
+   6. SERVES - accordion strips
+   ============================================================ */
+
+.serves {
+  margin-top: clamp(40px, 6vh, 76px);
+  border-top: 1px solid var(--line);
+}
+
+.serve {
+  position: relative;
+  display: block;
+  width: 100%;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.serve__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  background-image: var(--duo-grad);
+  isolation: isolate;
+  transition: opacity 700ms var(--ease-soft);
+}
+
+.serve__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mix-blend-mode: luminosity;
+  filter: var(--duo-tone) brightness(0.62);
+  transform: scale(1.06);
+  transition: transform 1400ms var(--ease-out);
+}
+
+/* The panel text sits directly on this, so it needs a real scrim, not a tint. */
+.serve__bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    var(--bg) 4%,
+    color-mix(in srgb, var(--bg) 72%, transparent) 46%,
+    color-mix(in srgb, var(--bg) 40%, transparent) 100%
+  );
+}
+
+.serve__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  padding-block: clamp(22px, 3.4vh, 34px);
+  padding-inline: clamp(4px, 1vw, 18px);
+}
+
+.serve__name {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 60;
+  font-size: clamp(1.7rem, 4.2vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  transition: transform 620ms var(--ease-out);
+}
+
+.serve__tag {
+  font-size: var(--fs-small);
+  color: var(--text-2);
+}
+
+.serve__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 620ms var(--ease-out);
+}
+
+.serve__panel > div {
+  overflow: hidden;
+}
+
+.serve__inner {
+  display: grid;
+  gap: 26px;
+  padding-inline: clamp(4px, 1vw, 18px);
+  padding-bottom: clamp(28px, 4vh, 44px);
+}
+
+@media (min-width: 760px) {
+  .serve__inner {
+    grid-template-columns: 1.1fr 1fr;
+    gap: clamp(30px, 5vw, 80px);
+  }
+}
+
+.serve__build {
+  display: grid;
+  gap: 10px;
+}
+
+.serve__build li {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 16px;
+  font-size: var(--fs-small);
+  padding-block: 7px;
+  border-top: 1px solid var(--line);
+}
+
+.serve__build li:first-child {
+  border-top: 0;
+}
+
+.serve__build .num {
+  color: var(--text-2);
+}
+
+.serve[data-open="true"] .serve__panel {
+  grid-template-rows: 1fr;
+}
+
+.serve[data-open="true"] .serve__bg {
+  opacity: 1;
+}
+
+.serve[data-open="true"] .serve__bg img {
+  transform: scale(1);
+}
+
+.serve[data-open="true"] .serve__name {
+  transform: translateX(clamp(6px, 1.4vw, 18px));
+}
+
+/* ============================================================
+   7. PROVENANCE - full-bleed parallax zoom
+   ============================================================ */
+
+.provenance {
+  position: relative;
+  min-height: 100dvh;
+  display: grid;
+  align-items: end;
+  overflow: hidden;
+  padding-block: clamp(60px, 12vh, 140px);
+}
+
+.provenance__bg {
+  position: absolute;
+  inset: -12% 0;
+  z-index: -1;
+  background-image: var(--duo-grad);
+  isolation: isolate;
+}
+
+.provenance__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mix-blend-mode: luminosity;
+  filter: var(--duo-tone) brightness(0.72);
+  will-change: transform;
+}
+
+.provenance__bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, var(--bg) 4%, transparent 52%),
+    linear-gradient(to bottom, var(--bg) 0%, transparent 30%);
+}
+
+.provenance__copy {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  position: relative;
+}
+
+.provenance__copy .h2 {
+  max-width: 14ch;
+  margin-bottom: 0.5em;
+}
+
+/* ============================================================
+   8. FIND A BOTTLE - split form
+   ============================================================ */
+
+.find__grid {
+  display: grid;
+  gap: clamp(40px, 6vw, 90px);
+}
+
+@media (min-width: 900px) {
+  .find__grid {
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: start;
+  }
+}
+
+.find__form {
+  display: grid;
+  gap: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: clamp(24px, 3.4vw, 42px);
+  background: color-mix(in srgb, var(--bg-raised) 70%, transparent);
+}
+
+.find__form .btn {
+  justify-self: start;
+}
+
+.stockists {
+  margin-top: clamp(36px, 5vh, 60px);
+  display: grid;
+  gap: 0;
+}
+
+.stockist {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  padding-block: 16px;
+  border-top: 1px solid var(--line);
+  transition: padding-left 420ms var(--ease-out);
+}
+
+.stockist:hover {
+  padding-left: 10px;
+}
+
+.stockist__name {
+  font-size: 1.05rem;
+}
+
+.stockist__city {
+  font-size: var(--fs-small);
+  color: var(--text-3);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.footer {
+  border-top: 1px solid var(--line);
+  padding-block: clamp(48px, 7vh, 80px) 28px;
+  position: relative;
+  z-index: var(--z-content);
+  background: var(--bg);
+}
+
+.footer__grid {
+  display: grid;
+  gap: 40px;
+}
+
+@media (min-width: 760px) {
+  .footer__grid {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+}
+
+.footer__col h4 {
+  font-size: var(--fs-micro);
+  font-family: var(--font-mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.footer__col li {
+  margin-bottom: 9px;
+  font-size: var(--fs-small);
+  color: var(--text-2);
+}
+
+.footer__col a:hover {
+  color: var(--text);
+}
+
+.footer__mark {
+  font-family: var(--font-display);
+  font-size: clamp(3.4rem, 15vw, 11rem);
+  line-height: 0.82;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text);
+  opacity: 0.09;
+  margin-top: clamp(40px, 7vh, 90px);
+  user-select: none;
+  text-align: center;
+}
+
+.footer__legal {
+  margin-top: 26px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 26px;
+  justify-content: space-between;
+  font-size: var(--fs-micro);
+  color: var(--text-3);
+}
+
+/* ============================================================
+   Shared section header
+   ============================================================ */
+
+.sec-head {
+  display: grid;
+  gap: 18px;
+  max-width: 34ch;
+}
+
+.sec-head .h2 {
+  text-wrap: balance;
+}

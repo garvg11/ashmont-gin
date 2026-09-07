@@ -1,0 +1,309 @@
+/* ============================================================
+   ASHMONT GIN - Reset, typography, layout primitives
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: auto; /* the scroll engine owns this */
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd,
+ul,
+ol {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+body {
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-text);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0.005em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  transition: background-color 600ms var(--ease-soft), color 600ms var(--ease-soft);
+}
+
+/* Lock scroll while the age gate or preloader owns the screen */
+body[data-locked="true"] {
+  overflow: hidden;
+  height: 100dvh;
+}
+
+/* ---------- Typography ---------- */
+
+.display,
+.h1,
+.h2,
+.h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-variation-settings: "opsz" 96;
+  letter-spacing: -0.018em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.display {
+  font-size: var(--fs-display);
+  line-height: 0.94;
+  letter-spacing: -0.03em;
+}
+
+.h1 {
+  font-size: var(--fs-h1);
+}
+
+.h2 {
+  font-size: var(--fs-h2);
+  line-height: 1.04;
+}
+
+.h3 {
+  font-size: var(--fs-h3);
+  font-variation-settings: "opsz" 40;
+  line-height: 1.14;
+  letter-spacing: -0.01em;
+}
+
+/* Same-family italic emphasis. Descender clearance is mandatory. */
+em,
+.em {
+  font-style: italic;
+  font-variation-settings: "opsz" 72;
+  line-height: 1.14;
+  padding-bottom: 0.06em;
+  display: inline-block;
+}
+
+.lead {
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  color: var(--text-2);
+  max-width: 46ch;
+  text-wrap: pretty;
+}
+
+.body {
+  max-width: 62ch;
+  color: var(--text-2);
+  text-wrap: pretty;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- Layout primitives ---------- */
+
+.shell {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.grid12 {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(16px, 2vw, 32px);
+}
+
+.section {
+  position: relative;
+  padding-block: var(--section-y);
+  z-index: var(--z-content);
+}
+
+.rule {
+  height: 1px;
+  background: var(--line);
+  border: 0;
+  margin: 0;
+}
+
+/* ---------- Accessibility ---------- */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-lit);
+  outline-offset: 2px;
+  border-radius: var(--radius);
+}
+
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: calc(var(--z-gate) + 1);
+  padding: 12px 18px;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-size: var(--fs-small);
+  border-radius: var(--radius);
+  transform: translateY(-160%);
+  transition: transform var(--dur-ui) var(--ease-out);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* ---------- Fixed atmosphere layers ---------- */
+
+/* The WebGL scene. Fixed, behind everything, never scrolls. */
+#scene {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-scene);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 900ms var(--ease-soft);
+}
+
+#scene[data-ready="true"] {
+  opacity: 1;
+}
+
+#scene canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Vignette anchored bottom-center, gives the ground a floor */
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-scene);
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 50% 118%, color-mix(in srgb, var(--sapphire-deep) 34%, transparent), transparent 62%),
+    radial-gradient(90% 70% at 50% -10%, color-mix(in srgb, var(--bg) 78%, transparent), transparent 58%);
+}
+
+/* Grain sits on a fixed layer so it never repaints during scroll (DESIGN.md 4) */
+.grain {
+  position: fixed;
+  inset: -50%;
+  z-index: var(--z-grain);
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: var(--grain-src);
+  background-size: 180px 180px;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .grain {
+    animation: grain-shift 6s steps(6) infinite;
+  }
+}
+
+@keyframes grain-shift {
+  0% { transform: translate3d(0, 0, 0); }
+  20% { transform: translate3d(-3%, 2%, 0); }
+  40% { transform: translate3d(2%, -3%, 0); }
+  60% { transform: translate3d(-2%, -2%, 0); }
+  80% { transform: translate3d(3%, 1%, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+/* ---------- Scroll container ----------
+   The engine drives the real window scroll, so these are plain
+   stacking wrappers. position:sticky and IntersectionObserver stay
+   native, which is what keeps the pinned sections honest. */
+#viewport {
+  position: relative;
+  z-index: var(--z-content);
+}
+
+/* No JS at all: everything is visible and readable. */
+html.no-js [data-reveal],
+html.no-js [data-word] {
+  opacity: 1 !important;
+  transform: none !important;
+  clip-path: none !important;
+}
+
+html.no-js #preloader,
+html.no-js #age-gate,
+html.no-js .cursor {
+  display: none !important;
+}
