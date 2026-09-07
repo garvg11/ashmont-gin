@@ -100,18 +100,20 @@ scroll-progress mark. A Didone wordmark does not sit on a 16px-rounded card.
 
 **Depth is built from four layers, never from drop shadows:**
 
-1. **Ground** - the dark blue base, with a faint radial vignette anchored bottom-center.
+1. **Ground** - the navy (or sky) base, with a faint radial vignette anchored bottom-center.
 2. **Atmosphere** - the WebGL fog and particle field, fixed behind all content.
 3. **Content** - type and media, moving at scroll speed.
 4. **Grain** - a fixed, `pointer-events: none` noise overlay at 3.5% opacity, GPU-cheap because it never scrolls.
 
-Shadows, when used at all, are tinted to the ground (`rgb(4 8 15 / .55)`), never pure black.
+Shadows, when used at all, are tinted to the ground (`rgb(3 8 18 / .6)`), never pure black.
 Elevation is communicated by **hairline + space**, not by boxes. Cards appear only where a real
 tap target exists.
 
-**Photography treatment (locked):** every photograph is duotone-mapped into the brand.
-`filter: grayscale(1) contrast(1.08)` under a sapphire multiply layer and a lifted-black screen layer.
-This is what makes stock photography read as one commissioned shoot.
+**Photography treatment (locked):** every photograph is duotone-mapped into the brand. The image
+is stripped to luminance and composited with `mix-blend-mode: luminosity` over `--duo-grad`, so hue
+and saturation come from the brand gradient and no pixel can drift off-palette. The gradient is
+navy-to-steel in dark and white-to-sky in light. This is what makes library photography read as one
+commissioned shoot.
 
 ---
 
@@ -131,8 +133,9 @@ so the proportions stay editable.
 **Environment:** a procedurally generated equirectangular gradient run through `PMREMGenerator`.
 Two bright softbox bands provide the specular streaks that make glass legible. No HDR download.
 
-**Light:** cold key from upper-left, sapphire rim from behind-right to separate the bottle from the
-fog, and a low fill so the punt does not crush to black.
+**Light:** cold key from upper-left, a pale blue rim from behind-right to separate the bottle from
+the fog, and a hemisphere fill so the punt does not crush to black. The backdrop is a soft pool of
+light rather than a hotspot, because transmission needs something behind the glass to bend.
 
 **Camera timeline (scroll-driven):**
 
