@@ -34,12 +34,12 @@ const BEATS = [
    without turning into a grey silhouette. */
 const THEME = {
   dark: {
-    fog: 0x060f22, glowA: 0x2a4f8f, glowB: 0x060f22,
+    fog: 0x060f22, glowA: 0x3a68b4, glowB: 0x060f22,
     key: 0xf0f6ff, rim: 0x8fb8ff, fill: 0x16305c, motes: 0xa8c6ee,
     fogDensity: 0.026,
   },
   light: {
-    fog: 0xcfe3f5, glowA: 0xffffff, glowB: 0xbcd8f0,
+    fog: 0xcfe3f5, glowA: 0xf4f9ff, glowB: 0xa8cbea,
     key: 0xffffff, rim: 0x6fa5e0, fill: 0x9dc2e6, motes: 0x5b83b8,
     fogDensity: 0.018,
   },
@@ -156,8 +156,8 @@ export function createScene(container, { tier = 'high' } = {}) {
         vec2 p = vUv - vec2(0.53, 0.54);
         p.x *= 1.55;
         float d = length(p);
-        float core = smoothstep(0.19, 0.0, d);
-        float halo = smoothstep(0.44, 0.04, d) * 0.32;
+        float core = smoothstep(0.34, 0.0, d) * 0.62;
+        float halo = smoothstep(0.72, 0.05, d) * 0.46;
         gl_FragColor = vec4(mix(uB, uA, clamp(core + halo, 0.0, 1.0)), 1.0);
       }
     `,

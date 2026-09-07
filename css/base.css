@@ -202,7 +202,7 @@ em,
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent-lit);
+  outline: 2px solid var(--accent-ring);
   outline-offset: 2px;
   border-radius: var(--radius);
 }
@@ -254,7 +254,7 @@ em,
   z-index: var(--z-scene);
   pointer-events: none;
   background:
-    radial-gradient(120% 80% at 50% 118%, color-mix(in srgb, var(--sapphire-deep) 34%, transparent), transparent 62%),
+    radial-gradient(120% 80% at 50% 118%, color-mix(in srgb, var(--azure-deep) 42%, transparent), transparent 62%),
     radial-gradient(90% 70% at 50% -10%, color-mix(in srgb, var(--bg) 78%, transparent), transparent 58%);
 }
 

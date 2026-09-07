@@ -302,19 +302,19 @@ export function createBottle({ tier = 'high' } = {}) {
 
   /* Pale ice-blue glass. The real bottle is close to clear with a cool
      cast, so attenuation is long and light rather than deep sapphire. */
-  const glassTint = new THREE.Color(0x9cc4e6);
+  const glassTint = new THREE.Color(0x7fb2dc);
 
   let glassMat;
   if (tier === 'high') {
     glassMat = new THREE.MeshPhysicalMaterial({
-      color: 0xffffff,
+      color: 0xeaf4ff,
       metalness: 0,
       roughness: 0.035,
       transmission: 1,
-      thickness: 0.5,
+      thickness: 0.62,
       ior: 1.52,
       attenuationColor: glassTint,
-      attenuationDistance: 2.6,
+      attenuationDistance: 1.55,
       clearcoat: 1,
       clearcoatRoughness: 0.04,
       envMapIntensity: 2.2,
@@ -439,10 +439,10 @@ export function createBottle({ tier = 'high' } = {}) {
     envMapIntensity: 0.55,
   });
   const label = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.652, 0.652, 0.86, 160, 1, true, -1.35, 2.7),
+    new THREE.CylinderGeometry(0.652, 0.652, 0.7, 160, 1, true, -1.3, 2.6),
     labelMat
   );
-  label.position.y = 0.96;
+  label.position.y = 0.9;
   label.name = 'label';
   group.add(label);
 

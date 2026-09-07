@@ -8,12 +8,13 @@ If a change conflicts with this file, change this file first.
 ## 1. The Read
 
 **Premium-consumer brand site (craft spirits)** for design-conscious drinkers and on-trade buyers.
-Language: **cold luxury, cinematic, maritime night**. Not warm-craft, not artisan-beige.
+Language: **heritage premium, cinematic, cold daylight**. The palette is read directly off the
+bottle: navy label, gold frame and crest, claret banner, pale ice-blue fluted glass, wood cap.
 
 Dials: `DESIGN_VARIANCE 7` · `MOTION_INTENSITY 7` · `VISUAL_DENSITY 3`
 
 **The story in one line:** Ashmont is distilled from cold. Everything on the page is the temperature
-of the bottle: blue glass, black water, sea fog, and a single point of light passing through.
+of the bottle: ice-blue fluted glass, navy and gold, and a single point of light passing through it.
 
 **The emotional arc:**
 
@@ -33,40 +34,44 @@ of the bottle: blue glass, black water, sea fog, and a single point of light pas
 
 ## 2. Color
 
-One accent, locked across the whole page: **Sapphire**. No brass, no gold, no warm neutrals.
-This is the "Cobalt + Cream" family, deliberately chosen over the default artisan beige/brass palette.
+Taken off the bottle, not invented. **One interactive accent: gold.** Navy is the ground, not an
+accent. Claret appears only on the bottle artwork and never in the interface.
 
-### Dark (brand default)
+### Dark (brand default, "navy night")
 
 | Token | Value | Use |
 |---|---|---|
-| `--ink-950` | `#04080F` | Page ground. Off-black blue, never `#000`. |
-| `--ink-900` | `#070D18` | Section ground |
-| `--ink-850` | `#0A1220` | Raised surface |
-| `--ink-800` | `#0E1829` | Hairlines, inset fills |
-| `--sapphire` | `#2554D8` | The accent. Glass, CTA, focus ring. |
-| `--sapphire-lit` | `#6E9BFF` | Highlights, glass edge light, hover |
-| `--sapphire-deep` | `#0B2A6B` | Glass attenuation, gradient floor |
-| `--bone` | `#E6E9F0` | Primary text. Cool off-white, never `#fff`. |
-| `--mist` | `#8F9AAF` | Secondary text |
-| `--mist-dim` | `#5C6779` | Tertiary, captions, disabled |
+| `--ink-950` | `#060F22` | Page ground. Navy-black, never `#000`. |
+| `--ink-900` | `#0B1730` | Section ground |
+| `--ink-850` | `#122040` | Raised surface |
+| `--gold` | `#C9A227` | The accent. CTAs, focus, progress. From the label frame. |
+| `--gold-lit` | `#E3C260` | Hover fill |
+| `--azure-deep` | `#16305C` | Vignette, gradient floor |
+| `--claret` | `#9C2028` | Bottle artwork only |
+| `--glass` | `#AFD2EE` | The pale bottle blue |
+| `--wood` | `#C9A980` | The cap |
+| `--bone` | `#EDF2F9` | Primary text |
+| `--mist` | `#9DB0CE` | Secondary text |
+| `--mist-dim` | `#6F84A8` | Tertiary. 5.0:1, AA. |
 
-### Light (`prefers-color-scheme: light` + manual toggle)
+### Light ("sky")
 
-Same accent, re-weighted for contrast. The site does not become a different brand.
+**A sky, not a white page.** White made the glass float on paper and killed the product. The
+light theme is cool daylight blue with navy type, so the bottle sits *in* something.
 
 | Token | Value |
 |---|---|
-| `--ink-950` | `#EEF0F5` (ground) |
-| `--ink-900` | `#F5F6F9` |
-| `--ink-850` | `#FFFFFF` |
-| `--sapphire` | `#1E45B8` (darkened for AA on light) |
-| `--bone` | `#0A1220` (text inverts) |
-| `--mist` | `#4A5468` |
+| `--ink-950` | `#CFE3F5` (the sky ground) |
+| `--ink-900` | `#DEECF9` |
+| `--ink-850` | `#EDF5FC` |
+| `--bone` | `#0A1A33` (navy text, 13:1) |
+| `--mist` | `#33507A` (6.2:1) |
+| `--mist-dim` | `#435E85` (5.0:1) |
+| `--accent` | `#A8830F` (gold, darkened for AA on a bright ground) |
+| `--accent-hover` | `#D9B43A` (brightens on hover, 8.6:1) |
 
-**Contrast floors:** body text AA 4.5:1, display AAA where possible. Every CTA audited.
-
----
+**Contrast floors:** body AA 4.5:1, display AAA where possible. Verified programmatically across
+every text node in both themes.
 
 ## 3. Type
 
@@ -115,9 +120,13 @@ This is what makes stock photography read as one commissioned shoot.
 One persistent WebGL scene, fixed behind the document, driven by a single scroll timeline.
 It is not a background loop. It is a camera move through one continuous space.
 
-**Subject:** the Ashmont bottle. Lathe-turned profile geometry, physically-based blue glass
-(`transmission`, `ior 1.5`, `thickness`, sapphire `attenuationColor`), a separate interior liquid
-volume, a blued-steel collar, and a canvas-drawn engraved label.
+**Subject:** the Ashmont bottle, built to match the real product. A lathe-turned profile is then
+**fluted** by modulating radius against angle (40 ribs, fading in above the heel and out below the
+shoulder). Physically-based pale glass (`transmission 1`, `ior 1.52`, long attenuation on
+`#7FB2DC`), a separate interior spirit volume, a natural-wood cap, a navy neck band with claret
+pinstripes, and a canvas-drawn navy label carrying the gold frame, the crest, `ESTD 1874` and the
+claret `SUPER PREMIUM GIN` banner. No model download: the whole bottle is a few kilobytes of maths,
+so the proportions stay editable.
 
 **Environment:** a procedurally generated equirectangular gradient run through `PMREMGenerator`.
 Two bright softbox bands provide the specular streaks that make glass legible. No HDR download.
@@ -132,9 +141,15 @@ fog, and a low fill so the punt does not crush to black.
 | 0.00 | Hero | 3/4 view, full bottle, slow idle drift |
 | 0.18 | Manifesto | Dolly in, bottle drifts left, fog thickens |
 | 0.34 | Botanicals | Bottle recedes, botanical motes drift forward |
-| 0.52 | Distillation | Bottle re-forms, cold light sweeps vertically |
-| 0.70 | The bottle | Macro on shoulder and label, shallow framing |
-| 0.85 | Provenance | Scene dissolves to fog, canvas opacity to 0 |
+| 0.46 | Distillation | Bottle recedes to atmosphere, cards carry the screen |
+| 0.70 | The bottle | Medium shot, bottle held in the right of frame beside the spec sheet |
+| 0.79 | Serves | Recedes again so the accordion has ground |
+| 0.92 | Provenance | Scene dissolves to fog, canvas opacity to 0 |
+
+**Opacity is a narrative, not a constant.** The scene surges for the hero (1.0), recedes while the
+reader is actually reading (manifesto 0.62, botanicals 0.14, distillation 0.10), surges once more
+for the bottle (1.0), then leaves (serves 0.10, provenance 0). Dense copy never sits on a busy
+render without a ground.
 
 **Cursor:** damped parallax on camera yaw/pitch, max 3 degrees. It should feel like the object has
 weight, not like it is glued to the pointer.

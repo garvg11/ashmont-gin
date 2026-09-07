@@ -50,7 +50,7 @@
   transform: scale(0.985);
 }
 
-/* Primary: sapphire fill, white label. 5.6:1 on dark, 6.9:1 on light. */
+/* Primary: gold fill, navy label. The label's own colour pairing. */
 .btn--primary {
   background: var(--accent);
   color: var(--accent-contrast);
@@ -92,7 +92,7 @@
   bottom: 0;
   width: 100%;
   height: 1px;
-  background: var(--accent-lit);
+  background: var(--accent);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 420ms var(--ease-out);
@@ -432,7 +432,7 @@ html[data-cursor="custom"] .cursor {
 .pre__bar i {
   position: absolute;
   inset: 0;
-  background: var(--sapphire-lit);
+  background: var(--accent);
   transform: scaleX(var(--p, 0));
   transform-origin: left;
   transition: transform 260ms var(--ease-out);
@@ -656,8 +656,8 @@ html[data-cursor="custom"] .cursor {
 }
 
 .field input:focus-visible {
-  border-color: var(--accent-lit);
-  outline: 2px solid color-mix(in srgb, var(--accent-lit) 40%, transparent);
+  border-color: var(--accent-ring);
+  outline: 2px solid color-mix(in srgb, var(--accent-ring) 45%, transparent);
   outline-offset: 1px;
 }
 
@@ -738,7 +738,7 @@ html[data-cursor="custom"] .cursor {
 }
 
 .progress .bar {
-  stroke: var(--accent-lit);
+  stroke: var(--accent);
   stroke-dasharray: 126;
   stroke-dashoffset: calc(126 - 126 * var(--p, 0));
 }
