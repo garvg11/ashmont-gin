@@ -1,3 +1,4 @@
+window.M["ui/reveal.js"] = (function () {
 /* ============================================================
    Reveals.
 
@@ -103,7 +104,7 @@ function splitLines(el) {
   return inners;
 }
 
-export function initReveals({ reducedMotion = false } = {}) {
+function initReveals({ reducedMotion = false } = {}) {
   if (reducedMotion) {
     gsap.set('[data-reveal], [data-stagger] > *', { opacity: 1, y: 0 });
     /* Same shape as the animated path. Returning a different one here
@@ -213,3 +214,6 @@ export function initReveals({ reducedMotion = false } = {}) {
     refresh() { ScrollTrigger.refresh(); },
   };
 }
+
+return { initReveals };
+})();

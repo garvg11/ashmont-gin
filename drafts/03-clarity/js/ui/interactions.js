@@ -1,3 +1,4 @@
+window.M["ui/interactions.js"] = (function () {
 /* ============================================================
    Micro-interactions.
 
@@ -12,7 +13,7 @@
 const { gsap } = window;
 
 /* ---------- Cursor ---------- */
-export function initCursor({ reducedMotion }) {
+function initCursor({ reducedMotion }) {
   const el = document.getElementById('cursor');
   if (!el || !window.matchMedia('(pointer: fine)').matches) return { destroy() {} };
 
@@ -62,7 +63,7 @@ export function initCursor({ reducedMotion }) {
 /* ---------- Magnetic controls ----------
    Eight pixels maximum. Past that it stops reading as weight and
    starts reading as a control running away from the pointer. */
-export function initMagnetic({ reducedMotion }) {
+function initMagnetic({ reducedMotion }) {
   if (reducedMotion || !window.matchMedia('(pointer: fine)').matches) return;
 
   document.querySelectorAll('[data-magnetic]').forEach((el) => {
@@ -85,7 +86,7 @@ export function initMagnetic({ reducedMotion }) {
 }
 
 /* ---------- Navigation ---------- */
-export function initNav({ smooth }) {
+function initNav({ smooth }) {
   const nav = document.getElementById('nav');
   const burger = document.getElementById('burger');
   const drawer = document.getElementById('drawer');
@@ -148,7 +149,7 @@ export function initNav({ smooth }) {
 /* ---------- Stockist form ----------
    No backend. It validates honestly and says so, rather than
    pretending to submit. */
-export function initForm() {
+function initForm() {
   const form = document.getElementById('find-form');
   if (!form) return;
   const msg = document.getElementById('find-msg');
@@ -176,3 +177,6 @@ export function initForm() {
     form.querySelector('button').disabled = true;
   });
 }
+
+return { initCursor, initMagnetic, initNav, initForm };
+})();

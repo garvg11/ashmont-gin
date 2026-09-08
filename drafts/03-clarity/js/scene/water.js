@@ -1,3 +1,4 @@
+window.M["scene/water.js"] = (function () {
 /* ============================================================
    The water.
 
@@ -11,7 +12,7 @@
    difference is the entire reason the cursor feels like water.
    ============================================================ */
 
-import * as THREE from '../../vendor/three.module.min.js';
+
 
 const SIM_VERT = /* glsl */ `
   varying vec2 vUv;
@@ -197,7 +198,7 @@ const WATER_FRAG = /* glsl */ `
  * @param {object} opts
  * @param {number} opts.size simulation resolution, power of two
  */
-export function createWater(renderer, { size = 256 } = {}) {
+function createWater(renderer, { size = 256 } = {}) {
   const rtOpts = {
     type: THREE.HalfFloatType,
     format: THREE.RGBAFormat,
@@ -339,3 +340,6 @@ export function createWater(renderer, { size = 256 } = {}) {
     },
   };
 }
+
+return { createWater };
+})();

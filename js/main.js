@@ -1,3 +1,4 @@
+(function () {
 /* ============================================================
    ASHMONT GIN
    Entry point. Boots in a deliberate order: chrome first so the page
@@ -5,19 +6,12 @@
    because it is the only optional part.
    ============================================================ */
 
-import { scroll } from './core/scroll.js';
-import { qualityTier, supportsWebGL, fontsReady, env, onReducedMotionChange } from './core/env.js';
-import { createBoot } from './ui/boot.js';
-import { initReveals, revealAboveFold } from './ui/reveal.js';
-import {
-  initCursor,
-  initMagnetic,
-  initNav,
-  initTheme,
-  initAccordion,
-  initForm,
-} from './ui/interactions.js';
-import { initPan, initStack, initManifesto, initParallax, initChrome, initAnchors } from './ui/sequences.js';
+const { scroll } = window.M["core/scroll.js"];
+const { qualityTier, supportsWebGL, fontsReady, env, onReducedMotionChange } = window.M["core/env.js"];
+const { createBoot } = window.M["ui/boot.js"];
+const { initReveals, revealAboveFold } = window.M["ui/reveal.js"];
+const { initCursor, initMagnetic, initNav, initTheme, initAccordion, initForm } = window.M["ui/interactions.js"];
+const { initPan, initStack, initManifesto, initParallax, initChrome, initAnchors } = window.M["ui/sequences.js"];
 
 const boot = createBoot();
 
@@ -59,7 +53,7 @@ async function start() {
 
   if (container && supportsWebGL()) {
     try {
-      const { createScene } = await import('./scene/scene.js');
+      const { createScene } = (window.M["scene/scene.js"]);
       scene = createScene(container, { tier: qualityTier() });
       scroll.onUpdate((s) => scene.setProgress(s.progress));
       window.addEventListener('load', () => scene.refresh());
@@ -113,3 +107,5 @@ start().catch((err) => {
     if (el.hasAttribute('data-reveal-media')) el.setAttribute('data-reveal-media', 'in');
   });
 });
+
+})();

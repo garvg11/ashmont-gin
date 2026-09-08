@@ -1,3 +1,4 @@
+window.M["core/smooth.js"] = (function () {
 /* ============================================================
    Smooth scrolling.
 
@@ -6,7 +7,7 @@
    ticker, one source of truth, no competing rAF loops.
    ============================================================ */
 
-export function createSmooth({ reducedMotion = false } = {}) {
+function createSmooth({ reducedMotion = false } = {}) {
   const { gsap, ScrollTrigger, Lenis } = window;
 
   gsap.registerPlugin(ScrollTrigger);
@@ -49,3 +50,6 @@ export function createSmooth({ reducedMotion = false } = {}) {
     destroy() { lenis.destroy(); },
   };
 }
+
+return { createSmooth };
+})();

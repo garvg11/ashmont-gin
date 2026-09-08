@@ -1,3 +1,4 @@
+window.M["scene/scene.js"] = (function () {
 /* ============================================================
    The scene.
 
@@ -9,10 +10,10 @@
    Nothing below the handoff pays for a render loop.
    ============================================================ */
 
-import * as THREE from '../../vendor/three.module.min.js';
-import { createBottle } from './bottle.js';
-import { createWater } from './water.js';
-import { clamp, damp, smoothstep } from '../core/env.js';
+
+const { createBottle } = window.M["scene/bottle.js"];
+const { createWater } = window.M["scene/water.js"];
+const { clamp, damp, smoothstep } = window.M["core/env.js"];
 
 /* Two poses and a drain. Anything more would be a camera tour, and a
    camera tour is what the brief asked us not to build.
@@ -33,7 +34,7 @@ const POSE = {
 
 const lerp = (a, b, t) => a + (b - a) * t;
 
-export function createScene(container, { tier = 'high', reducedMotion = false } = {}) {
+function createScene(container, { tier = 'high', reducedMotion = false } = {}) {
   const canvas = container.querySelector('canvas');
 
   const renderer = new THREE.WebGLRenderer({
@@ -253,3 +254,6 @@ export function createScene(container, { tier = 'high', reducedMotion = false } 
     },
   };
 }
+
+return { createScene };
+})();

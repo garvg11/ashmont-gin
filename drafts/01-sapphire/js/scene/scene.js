@@ -1,3 +1,4 @@
+window.M["scene/scene.js"] = (function () {
 /* ============================================================
    The persistent WebGL scene.
 
@@ -6,10 +7,10 @@
    measured from the document so it stays in sync at any viewport size.
    ============================================================ */
 
-import * as THREE from '../../vendor/three.module.min.js';
-import { createBottle } from './bottle.js';
-import { onFrame } from '../core/raf.js';
-import { clamp, damp, smoothstep, env as environment } from '../core/env.js';
+
+const { createBottle } = window.M["scene/bottle.js"];
+const { onFrame } = window.M["core/raf.js"];
+const { clamp, damp, smoothstep, env: environment } = window.M["core/env.js"];
 
 /* Camera keyframes. `at` names the section the beat is anchored to.
    Positions are in bottle-space, where the bottle's mass sits near y = 0. */
@@ -34,7 +35,7 @@ const THEME = {
   light: { fog: 0xeef0f5, glowA: 0xdae4f7, glowB: 0xeef0f5, key: 0xffffff, rim: 0x1e45b8, fill: 0xa8bde8, motes: 0x4a6bb8, fogDensity: 0.022 },
 };
 
-export function createScene(container, { tier = 'high' } = {}) {
+function createScene(container, { tier = 'high' } = {}) {
   const themeName = () =>
     document.documentElement.getAttribute('data-theme') ||
     (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
@@ -479,3 +480,6 @@ export function createScene(container, { tier = 'high' } = {}) {
     },
   };
 }
+
+return { createScene };
+})();

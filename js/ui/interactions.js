@@ -1,10 +1,11 @@
+window.M["ui/interactions.js"] = (function () {
 /* ============================================================
    Micro-interactions. Everything here is tactile feedback, which is
    the one job motion is allowed to do without asking permission.
    ============================================================ */
 
-import { onFrame } from '../core/raf.js';
-import { damp, env, clamp } from '../core/env.js';
+const { onFrame } = window.M["core/raf.js"];
+const { damp, env, clamp } = window.M["core/env.js"];
 
 /* ---------- Cursor ----------
    Requested in the brief. Gated to fine pointers, disabled entirely
@@ -12,7 +13,7 @@ import { damp, env, clamp } from '../core/env.js';
    so text selection never feels broken.
    ---------------------------------------------------------------- */
 
-export function initCursor() {
+function initCursor() {
   const root = document.querySelector('.cursor');
   if (!root || !env.finePointer || env.reducedMotion) return;
 
@@ -60,7 +61,7 @@ export function initCursor() {
 
 /* ---------- Magnetic buttons + directional fill ---------- */
 
-export function initMagnetic() {
+function initMagnetic() {
   if (!env.finePointer || env.reducedMotion) return;
 
   const active = new Map();
@@ -115,7 +116,7 @@ export function initMagnetic() {
 
 /* ---------- Navigation drawer ---------- */
 
-export function initNav() {
+function initNav() {
   const btn = document.getElementById('menu-btn');
   const drawer = document.getElementById('drawer');
   if (!btn || !drawer) return;
@@ -145,7 +146,7 @@ export function initNav() {
 
 /* ---------- Theme ---------- */
 
-export function initTheme() {
+function initTheme() {
   const btn = document.getElementById('theme-toggle');
   if (!btn) return;
 
@@ -174,7 +175,7 @@ export function initTheme() {
 
 /* ---------- Serves accordion ---------- */
 
-export function initAccordion() {
+function initAccordion() {
   const group = document.querySelector('[data-accordion]');
   if (!group) return;
   const items = [...group.querySelectorAll('[data-serve]')];
@@ -204,7 +205,7 @@ export function initAccordion() {
 
 /* ---------- Newsletter form ---------- */
 
-export function initForm() {
+function initForm() {
   const form = document.getElementById('drop-form');
   if (!form) return;
 
@@ -253,3 +254,6 @@ export function initForm() {
     }
   });
 }
+
+return { initCursor, initMagnetic, initNav, initTheme, initAccordion, initForm };
+})();

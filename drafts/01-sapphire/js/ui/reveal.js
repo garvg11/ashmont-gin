@@ -1,16 +1,17 @@
+window.M["ui/reveal.js"] = (function () {
 /* ============================================================
    Entrance reveals and word splitting.
    IntersectionObserver only. No scroll handlers.
    ============================================================ */
 
-import { env } from '../core/env.js';
+const { env } = window.M["core/env.js"];
 
 /**
  * Wrap every word in `<span class="word"><i>word</i></span>` while
  * preserving inline markup such as <em>. Whitespace is left alone so
  * the text still copies and reads correctly.
  */
-export function splitWords(el) {
+function splitWords(el) {
   if (el.dataset.split === 'true') return;
   const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
   const textNodes = [];
@@ -48,7 +49,7 @@ function node_split(value) {
 }
 
 /** Observe everything marked for reveal and flip it once, on entry. */
-export function initReveals() {
+function initReveals() {
   document.querySelectorAll('[data-words]').forEach(splitWords);
 
   const targets = document.querySelectorAll('[data-reveal], [data-reveal-media]');
@@ -78,10 +79,13 @@ function setIn(el) {
 }
 
 /** Reveal immediately, used for anything already in view when the gate lifts. */
-export function revealAboveFold() {
+function revealAboveFold() {
   const vh = window.innerHeight;
   document.querySelectorAll('[data-reveal], [data-reveal-media]').forEach((el) => {
     const rect = el.getBoundingClientRect();
     if (rect.top < vh * 0.92 && rect.bottom > 0) setIn(el);
   });
 }
+
+return { splitWords, initReveals, revealAboveFold };
+})();

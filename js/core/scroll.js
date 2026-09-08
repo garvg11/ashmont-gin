@@ -1,3 +1,4 @@
+window.M["core/scroll.js"] = (function () {
 /* ============================================================
    Smooth scroll + scroll-progress tracks.
 
@@ -8,8 +9,8 @@
    measurement is cached and refreshed only on resize.
    ============================================================ */
 
-import { onFrame } from './raf.js';
-import { clamp, damp, env } from './env.js';
+const { onFrame } = window.M["core/raf.js"];
+const { clamp, damp, env } = window.M["core/env.js"];
 
 const EASE = 0.085;
 
@@ -207,5 +208,7 @@ Scroll.enterLeave = (top, height, vh) => ({ start: top - vh, end: top + height }
 /** For sticky sections: 0 when the section top hits the viewport top, 1 when its bottom does. */
 Scroll.pin = (top, height, vh) => ({ start: top, end: top + height - vh });
 
-export const scroll = new Scroll();
-export { Scroll };
+const scroll = new Scroll();
+
+return { scroll, Scroll };
+})();

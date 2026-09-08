@@ -1,3 +1,4 @@
+window.M["scene/bottle.js"] = (function () {
 /* ============================================================
    The Ashmont Gin bottle.
 
@@ -10,7 +11,7 @@
    download, and the proportions stay editable.
    ============================================================ */
 
-import * as THREE from '../../vendor/three.module.min.js';
+
 
 /* Profile from the centre of the punt up to the lip.
    x = radius, y = height. The bottle stands 2.61 units tall and is
@@ -288,7 +289,7 @@ function neckTexture() {
  * @param {object} opts
  * @param {'high'|'medium'|'low'} opts.tier
  */
-export function createBottle({ tier = 'high' } = {}) {
+function createBottle({ tier = 'high' } = {}) {
   const group = new THREE.Group();
 
   const radial = tier === 'high' ? 288 : tier === 'medium' ? 144 : 72;
@@ -462,3 +463,6 @@ export function createBottle({ tier = 'high' } = {}) {
     },
   };
 }
+
+return { createBottle };
+})();

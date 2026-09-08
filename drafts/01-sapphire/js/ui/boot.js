@@ -1,3 +1,4 @@
+window.M["ui/boot.js"] = (function () {
 /* ============================================================
    Preloader and age gate.
 
@@ -5,8 +6,8 @@
    the first design moment: restraint, then being let in.
    ============================================================ */
 
-import { onFrame } from '../core/raf.js';
-import { damp, clamp, env } from '../core/env.js';
+const { onFrame } = window.M["core/raf.js"];
+const { damp, clamp, env } = window.M["core/env.js"];
 
 const AGE_KEY = 'ashmont-age-ok';
 
@@ -18,7 +19,7 @@ function stored(key) {
   }
 }
 
-export function createBoot() {
+function createBoot() {
   const el = document.getElementById('preloader');
   const bar = document.getElementById('pre-bar');
   const count = document.getElementById('pre-count');
@@ -107,3 +108,6 @@ export function createBoot() {
     },
   };
 }
+
+return { createBoot };
+})();

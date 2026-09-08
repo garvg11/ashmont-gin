@@ -1,3 +1,4 @@
+(function () {
 /* ============================================================
    Ashmont, direction 03 — entry point.
 
@@ -6,11 +7,11 @@
    driving once ScrollTrigger knows the real page height.
    ============================================================ */
 
-import { env, qualityTier, supportsWebGL, fontsReady } from './core/env.js';
-import { createSmooth } from './core/smooth.js';
-import { createBoot } from './ui/boot.js';
-import { initReveals } from './ui/reveal.js';
-import { initCursor, initMagnetic, initNav, initForm } from './ui/interactions.js';
+const { env, qualityTier, supportsWebGL, fontsReady } = window.M["core/env.js"];
+const { createSmooth } = window.M["core/smooth.js"];
+const { createBoot } = window.M["ui/boot.js"];
+const { initReveals } = window.M["ui/reveal.js"];
+const { initCursor, initMagnetic, initNav, initForm } = window.M["ui/interactions.js"];
 
 const { gsap, ScrollTrigger } = window;
 
@@ -42,7 +43,7 @@ async function main() {
   let active = false;
 
   if (supportsWebGL()) {
-    const { createScene } = await import('./scene/scene.js');
+    const { createScene } = (window.M["scene/scene.js"]);
     scene = createScene(stage, { tier: qualityTier(), reducedMotion });
     active = true;
     boot.set(88);
@@ -179,3 +180,5 @@ main().catch((err) => {
   document.documentElement.classList.add('js-failed', 'ready');
   document.body.dataset.loading = 'false';
 });
+
+})();

@@ -1,3 +1,4 @@
+window.M["ui/sequences.js"] = (function () {
 /* ============================================================
    Scroll sequences: horizontal pan, sticky stack, kinetic manifesto,
    parallax, progress. Each one earns its place:
@@ -8,12 +9,12 @@
    parallax  puts the coast behind the type instead of under it
    ============================================================ */
 
-import { scroll, Scroll } from '../core/scroll.js';
-import { clamp, lerp, env } from '../core/env.js';
+const { scroll, Scroll } = window.M["core/scroll.js"];
+const { clamp, lerp, env } = window.M["core/env.js"];
 
 /* ---------- 3. Botanicals: vertical scroll drives horizontal travel ---------- */
 
-export function initPan() {
+function initPan() {
   const section = document.querySelector('[data-pan]');
   if (!section) return;
 
@@ -113,7 +114,7 @@ export function initPan() {
 
 /* ---------- 4. Distillation: sticky stack ---------- */
 
-export function initStack() {
+function initStack() {
   const stages = [...document.querySelectorAll('[data-stage]')];
   if (stages.length < 2) return;
 
@@ -142,7 +143,7 @@ export function initStack() {
 
 /* ---------- 2. Manifesto: words light as they are read ---------- */
 
-export function initManifesto() {
+function initManifesto() {
   const para = document.querySelector('[data-manifesto]');
   if (!para) return;
   const section = para.closest('.manifesto');
@@ -171,7 +172,7 @@ export function initManifesto() {
 
 /* ---------- 7. Provenance: parallax zoom ---------- */
 
-export function initParallax() {
+function initParallax() {
   document.querySelectorAll('[data-parallax]').forEach((wrap) => {
     const img = wrap.querySelector('img');
     if (!img) return;
@@ -192,7 +193,7 @@ export function initParallax() {
 
 /* ---------- Nav state and scroll progress ---------- */
 
-export function initChrome() {
+function initChrome() {
   const nav = document.getElementById('nav');
   const progress = document.getElementById('progress');
   const hero = document.getElementById('top');
@@ -210,7 +211,7 @@ export function initChrome() {
 
 /* ---------- Anchor links routed through the scroll engine ---------- */
 
-export function initAnchors() {
+function initAnchors() {
   document.addEventListener('click', (e) => {
     const link = e.target.closest('a[href^="#"]');
     if (!link) return;
@@ -234,3 +235,6 @@ function debounce(fn, ms) {
     t = setTimeout(() => fn(...args), ms);
   };
 }
+
+return { initPan, initStack, initManifesto, initParallax, initChrome, initAnchors };
+})();

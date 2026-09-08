@@ -1,3 +1,4 @@
+window.M["core/raf.js"] = (function () {
 /* ============================================================
    One requestAnimationFrame loop for the whole page.
    Everything that animates subscribes here. Nothing else calls rAF.
@@ -30,7 +31,7 @@ function stop() {
 }
 
 /** Subscribe to the frame loop. Returns an unsubscribe function. */
-export function onFrame(fn) {
+function onFrame(fn) {
   subscribers.add(fn);
   start();
   return () => {
@@ -44,3 +45,6 @@ document.addEventListener('visibilitychange', () => {
   if (document.hidden) stop();
   else if (subscribers.size) start();
 });
+
+return { onFrame };
+})();

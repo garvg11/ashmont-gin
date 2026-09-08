@@ -1,3 +1,4 @@
+window.M["ui/boot.js"] = (function () {
 /* ============================================================
    The preloader.
 
@@ -7,7 +8,7 @@
    the hero entrance starts from the bottom of the same motion.
    ============================================================ */
 
-export function createBoot() {
+function createBoot() {
   const root = document.getElementById('boot');
   const bar = document.getElementById('boot-bar');
   const num = document.getElementById('boot-num');
@@ -55,3 +56,6 @@ export function createBoot() {
     },
   };
 }
+
+return { createBoot };
+})();

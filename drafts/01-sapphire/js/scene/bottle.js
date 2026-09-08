@@ -1,3 +1,4 @@
+window.M["scene/bottle.js"] = (function () {
 /* ============================================================
    DRAFT 1 - the sapphire concept.
 
@@ -8,7 +9,7 @@
    direction.
    ============================================================ */
 
-import * as THREE from '../../vendor/three.module.min.js';
+
 
 /* Profile of the bottle, from the centre of the punt up to the lip.
    x = radius, y = height. The bottle is about 2.7 units tall. */
@@ -125,7 +126,7 @@ function labelTexture(theme) {
  * @param {'high'|'medium'|'low'} opts.tier
  * @param {'dark'|'light'} opts.theme
  */
-export function createBottle({ tier = 'high', theme = 'dark' } = {}) {
+function createBottle({ tier = 'high', theme = 'dark' } = {}) {
   const group = new THREE.Group();
   const radial = tier === 'high' ? 128 : tier === 'medium' ? 72 : 48;
   const subdiv = tier === 'high' ? 7 : 4;
@@ -304,3 +305,6 @@ export function createBottle({ tier = 'high', theme = 'dark' } = {}) {
     },
   };
 }
+
+return { createBottle };
+})();
