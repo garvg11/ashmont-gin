@@ -1,0 +1,82 @@
+/* ============================================================
+   Ashmont - direction 03, "Clarity".
+
+   The page has two grounds, not one theme. The hero is submerged
+   (deep water, light type). Everything after the handoff has
+   surfaced (cold daylight, dark type). Breaking that surface is
+   the whole story, so the tokens come in two named sets and the
+   sections opt in with .on-deep or .on-light.
+   ============================================================ */
+
+:root {
+  /* ---- Water, read off the reference frame ---- */
+  --abyss:    #071a2c;  /* deepest water, hero ground, primary type on light */
+  --marine:   #123a5e;  /* CTA fill, deep section ground */
+  --marine-2: #1b4e7a;  /* CTA hover */
+  --water:    #3d6e96;  /* mid water */
+  --haze:     #a9c5dd;  /* secondary type on deep, hairlines */
+  --surface:  #e4eef7;  /* page ground after the handoff. Daylight, never white. */
+  --mist:     #f1f7fc;  /* raised surface on light */
+  --caustic:  #fbfdff;  /* the light itself. Primary type on deep. */
+  --cork:     #c8a882;  /* the cap. The only warm note on the page. */
+
+  /* ---- Type roles, resolved per ground ---- */
+  --ink:    var(--abyss);   /* 14.9:1 on --surface */
+  --ink-2:  #2f5a7d;        /*  5.6:1 on --surface */
+  --ink-3:  #4a6e8e;        /*  4.6:1 - labels, hairlines, tertiary */
+  --rule:   rgb(7 26 44 / .14);
+  --ground: var(--surface);
+  --raised: var(--mist);
+  --accent: var(--marine);
+  --accent-hover: var(--marine-2);
+  --on-accent: var(--caustic);
+
+  /* ---- Type ---- */
+  --font-display: 'Fraunces', 'Times New Roman', Georgia, serif;
+  --font-text: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-data: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Consolas, monospace;
+
+  /* Fluid, anchored to a 1440px design width. */
+  --fs-display: clamp(3.25rem, 8.6vw, 9.5rem);
+  --fs-h1:      clamp(2.5rem, 5.4vw, 5.25rem);
+  --fs-h2:      clamp(2rem, 3.9vw, 3.5rem);
+  --fs-h3:      clamp(1.375rem, 1.9vw, 1.75rem);
+  --fs-lead:    clamp(1.0625rem, 1.35vw, 1.3125rem);
+  --fs-body:    clamp(1rem, 1.05vw, 1.0625rem);
+  --fs-small:   0.9375rem;
+  --fs-micro:   0.75rem;
+
+  --track-label: .2em;
+  --measure: 62ch;
+
+  /* ---- Shape ---- */
+  --r-sm: 4px;
+  --r-pill: 999px;
+
+  /* ---- Rhythm ---- */
+  --gutter: clamp(20px, 4.4vw, 72px);
+  --section-y: clamp(104px, 15vh, 190px);
+  --grid-max: 1440px;
+
+  /* ---- Motion ---- */
+  --ease-out:   cubic-bezier(.16, 1, .3, 1);
+  --ease-inout: cubic-bezier(.65, .05, .36, 1);
+  --ease-soft:  cubic-bezier(.4, .14, .3, 1);
+  --d-micro: 160ms;
+  --d-ui:    320ms;
+  --d-reveal: 760ms;
+}
+
+/* Sections that sit on deep water flip the type roles rather than
+   redefining colours, so a component never needs to know where it is. */
+.on-deep {
+  --ink:   var(--caustic);
+  --ink-2: var(--haze);
+  --ink-3: #7ea3c2;
+  --rule:  rgb(251 253 255 / .18);
+  --ground: var(--abyss);
+  --raised: rgb(251 253 255 / .05);
+  --accent: var(--caustic);
+  --accent-hover: #ffffff;
+  --on-accent: var(--abyss);
+}

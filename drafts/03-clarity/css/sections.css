@@ -1,0 +1,316 @@
+/* ============================================================
+   Sections. Each one uses a layout family exactly once.
+   ============================================================ */
+
+/* Content sits above the fixed stage. Every section that is not meant
+   to show the water carries its own ground, so a stalled canvas can
+   never bleed through the page. */
+main, .footer { position: relative; z-index: 1; }
+.section { background: var(--ground); }
+
+/* ---------- Shared section head ---------- */
+.sec-head { display: grid; gap: 20px; max-width: 62ch; margin-bottom: clamp(48px, 7vh, 92px); }
+.sec-head--center { justify-items: center; text-align: center; max-width: none; }
+.sec-head--center .lead { text-align: center; }
+
+/* ============ 1. HERO ============
+   Type sits in the scene, not on a panel. Left aligned per the
+   reference, with mercury's air: the headline starts a third of
+   the way down and the supporting row hangs off the bottom rule. */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-block: clamp(96px, 16vh, 170px) clamp(40px, 7vh, 76px);
+  color: var(--ink);
+  background: transparent;
+}
+
+.hero__inner { display: grid; gap: clamp(20px, 3vh, 34px); }
+
+.hero__title {
+  font-size: var(--fs-display);
+  font-variation-settings: 'SOFT' 34, 'WONK' 0, 'opsz' 144;
+  font-weight: 300;
+  line-height: .9;
+  letter-spacing: -.028em;
+  max-width: 14ch;
+  text-shadow: 0 2px 40px rgb(4 16 28 / .45);
+}
+
+/* The full stop as a designed mark, taken from the reference. */
+.hero__dot {
+  display: inline-block;
+  width: .13em; height: .13em;
+  margin-left: .1em;
+  background: currentColor;
+  transform: rotate(45deg) translateY(-.06em);
+  border-radius: 1px;
+}
+
+.hero__kicker {
+  color: var(--haze);
+  letter-spacing: .34em;
+  font-size: .8125rem;
+}
+
+.hero__foot {
+  display: grid;
+  gap: clamp(24px, 4vh, 40px);
+  grid-template-columns: minmax(0, 44ch);
+  padding-top: clamp(18px, 3vh, 34px);
+  border-top: 1px solid var(--rule);
+  max-width: 44ch;
+}
+.hero__blurb {
+  font-size: var(--fs-small);
+  line-height: 1.62;
+  color: var(--haze);
+  max-width: 42ch;
+  margin: 0;
+}
+.hero__cta { justify-self: start; }
+
+.hero__hint {
+  position: absolute;
+  right: var(--gutter);
+  bottom: clamp(40px, 7vh, 76px);
+  writing-mode: vertical-rl;
+  letter-spacing: .3em;
+  color: var(--ink-3);
+}
+.hero__hint::after {
+  content: '';
+  display: block;
+  width: 1px; height: 46px;
+  margin: 14px auto 0;
+  background: linear-gradient(var(--ink-3), transparent);
+}
+
+/* ============ 2. SURFACE ============
+   The bottle lands in the right half. Copy takes the left, and the
+   section is the last thing the WebGL stage is alive for. */
+.surface {
+  position: relative;
+  min-height: 100svh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  /* The tail is deliberate, and its size is arithmetic rather than
+     taste. The drain ends when the section's bottom reaches the
+     viewport's bottom, so the usable drain distance is the tail minus
+     one viewport. 180dvh buys roughly 80dvh of held, copy-free water
+     for the waterline to cross. */
+  padding-block: var(--section-y) 180dvh;
+  color: var(--ink);
+}
+.surface__inner { width: 100%; }
+.surface__copy {
+  display: grid;
+  gap: clamp(24px, 3.4vh, 40px);
+  max-width: 22ch;
+  max-width: min(52ch, 46%);
+}
+.surface__line {
+  font-size: clamp(1.75rem, 3.1vw, 3rem);
+  line-height: 1.08;
+  font-variation-settings: 'SOFT' 30, 'WONK' 0, 'opsz' 72;
+  max-width: 22ch;
+}
+.surface__sign { display: grid; gap: 4px; }
+.surface__sign .data { color: var(--ink); }
+
+/* ============ 3. BOTANICALS — editorial index ============
+   A ruled list, not cards. The hovered row opens up and everything
+   else steps back, so the page reads as one index rather than seven
+   competing tiles. */
+.botanicals__list { border-top: 1px solid var(--rule); }
+
+.bot {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 19ch) minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: clamp(16px, 2.4vw, 40px);
+  padding-block: clamp(22px, 3vh, 34px);
+  border-bottom: 1px solid var(--rule);
+  transition: opacity 420ms var(--ease-soft);
+}
+.bot__n { color: var(--ink-3); }
+.bot__name {
+  margin: 0;
+  /* Two of the seven names wrap. Sized so a wrapped row still reads as
+     one entry rather than as two. */
+  font-size: clamp(1.1875rem, 1.55vw, 1.4375rem);
+  line-height: 1.16;
+  transition: transform 520ms var(--ease-out);
+}
+.bot__note { color: var(--ink-2); font-size: var(--fs-small); margin: 0; max-width: 46ch; }
+.bot__origin { color: var(--ink-3); white-space: nowrap; }
+
+@media (hover: hover) and (pointer: fine) {
+  .botanicals__list:hover .bot { opacity: .42; }
+  .botanicals__list .bot:hover { opacity: 1; }
+  .botanicals__list .bot:hover .bot__name { transform: translateX(10px); }
+}
+
+/* ============ 4. DISTILLATION — measured ============ */
+.distil__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(40px, 6vw, 96px);
+  align-items: start;
+}
+.distil__head { margin-bottom: 0; position: sticky; top: clamp(96px, 14vh, 150px); }
+
+.distil__specs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
+.spec {
+  display: grid;
+  gap: 12px;
+  padding: clamp(24px, 3vw, 38px);
+  background: var(--ground);
+}
+.spec dd { display: grid; gap: 6px; }
+.spec__v {
+  font-family: var(--font-display);
+  font-variation-settings: 'SOFT' 30, 'WONK' 0, 'opsz' 60;
+  font-weight: 300;
+  font-size: clamp(2rem, 3.4vw, 3rem);
+  line-height: 1;
+  letter-spacing: -.02em;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.spec__d { font-size: var(--fs-small); color: var(--ink-2); }
+
+/* ============ 5. SERVES ============ */
+.serves { background: var(--raised); }
+.serves__row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--rule);
+  border-block: 1px solid var(--rule);
+}
+.serve {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+  padding: clamp(28px, 3.4vw, 48px);
+  background: var(--raised);
+  transition: background-color 480ms var(--ease-soft);
+}
+.serve:hover { background: var(--ground); }
+.serve__n { color: var(--ink-3); }
+.serve h3 { margin: 0; }
+.serve__body { font-size: var(--fs-small); color: var(--ink-2); margin: 0; }
+.serve__glass { color: var(--ink-3); margin-top: 6px; }
+
+/* ============ 6. PROVENANCE — full bleed ============
+   A cold-water field built from layered gradients rather than a
+   photograph, so it stays on palette and costs nothing to load. */
+.provenance {
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(140px, 24vh, 260px);
+  color: var(--ink);
+  isolation: isolate;
+}
+.provenance__field {
+  position: absolute;
+  inset: -18% 0;
+  z-index: -1;
+  background:
+    radial-gradient(120% 80% at 18% 8%,  rgb(61 110 150 / .55), transparent 62%),
+    radial-gradient(90% 70% at 88% 92%,  rgb(169 197 221 / .3), transparent 60%),
+    linear-gradient(180deg, #0a2338 0%, #071a2c 46%, #050f1b 100%);
+  will-change: transform;
+}
+/* A second, slower band gives the field parallax depth without an image. */
+.provenance__field::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(102deg,
+      rgb(251 253 255 / .045) 0 1px,
+      transparent 1px 74px);
+  mask-image: radial-gradient(80% 60% at 50% 50%, #000 20%, transparent 78%);
+}
+.provenance__inner { display: grid; gap: clamp(22px, 3vh, 34px); max-width: 68ch; }
+.provenance__facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, max-content));
+  gap: clamp(28px, 5vw, 72px);
+  margin-top: clamp(20px, 3vh, 32px);
+  padding-top: 26px;
+  border-top: 1px solid var(--rule);
+}
+.provenance__facts > div { display: grid; gap: 8px; }
+.provenance__facts dd {
+  font-family: var(--font-display);
+  font-variation-settings: 'SOFT' 30, 'WONK' 0, 'opsz' 60;
+  font-weight: 300;
+  font-size: clamp(1.75rem, 2.8vw, 2.5rem);
+  line-height: 1;
+  color: var(--ink);
+}
+
+/* ============ 7. FIND ============ */
+.find__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(40px, 6vw, 100px);
+  align-items: start;
+}
+.find__copy { display: grid; gap: 22px; }
+.find__form { display: grid; gap: 26px; }
+.find__form .btn { justify-self: start; margin-top: 6px; }
+.find__msg { font-size: var(--fs-small); color: var(--ink-2); min-height: 1.6em; margin: 0; }
+.find__msg[data-error='true'] { color: #a33; }
+
+/* ============================================================
+   Responsive. Everything asymmetric collapses to one column and
+   the hero gives its type more room, not less.
+   ============================================================ */
+
+@media (max-width: 1024px) {
+  .distil__inner { grid-template-columns: 1fr; }
+  .distil__head { position: static; margin-bottom: clamp(32px, 5vh, 56px); }
+  .serves__row { grid-template-columns: 1fr; }
+  .find__inner { grid-template-columns: 1fr; }
+  .surface__copy { max-width: min(52ch, 62%); }
+}
+
+@media (max-width: 760px) {
+  .hero { justify-content: flex-end; }
+  .hero__title { font-size: clamp(2.75rem, 13.5vw, 4.5rem); max-width: 11ch; }
+  .hero__foot { grid-template-columns: 1fr; max-width: none; }
+  .hero__blurb { max-width: 38ch; }
+  .hero__hint { display: none; }
+
+  .surface { min-height: auto; padding-block: 46dvh 155dvh; }
+  .surface__copy { max-width: none; }
+
+  .bot {
+    grid-template-columns: 3rem minmax(0, 1fr);
+    row-gap: 8px;
+    align-items: start;
+  }
+  .bot__note { grid-column: 2; }
+  .bot__origin { grid-column: 2; }
+
+  .distil__specs { grid-template-columns: 1fr; }
+  .provenance { padding-block: clamp(110px, 18vh, 160px); }
+}
+
+@media (max-width: 420px) {
+  .bot { grid-template-columns: 2.6rem minmax(0, 1fr); }
+}

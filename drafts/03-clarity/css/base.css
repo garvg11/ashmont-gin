@@ -1,0 +1,162 @@
+@import url('../assets/fonts/fonts.css');
+
+/* ============================================================
+   Reset, typography, layout primitives.
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: auto; /* Lenis owns scrolling. Never both. */
+}
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  line-height: 1.6;
+  font-variant-ligatures: common-ligatures;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+body[data-loading='true'] { overflow: hidden; }
+
+img, svg, canvas, video { display: block; max-width: 100%; }
+button, input, textarea, select { font: inherit; color: inherit; }
+
+h1, h2, h3, h4, p, figure, blockquote, ul, ol, dl, dd { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+
+a { color: inherit; text-decoration: none; }
+
+::selection { background: var(--marine); color: var(--caustic); }
+.on-deep ::selection { background: var(--caustic); color: var(--abyss); }
+
+/* ---------- Display type ----------
+   Fraunces with the wonk dialled out and the softness up: ball
+   terminals and a teardrop 'a', without the novelty. Optical size
+   is driven hard so the hairlines survive at display scale. */
+.display, h1, h2, h3 {
+  font-family: var(--font-display);
+  font-variation-settings: 'SOFT' 32, 'WONK' 0, 'opsz' 96;
+  font-weight: 300;
+  line-height: .96;
+  letter-spacing: -.022em;
+  text-wrap: balance;
+  color: var(--ink);
+}
+
+.display  { font-size: var(--fs-display); }
+.h1       { font-size: var(--fs-h1); }
+.h2       { font-size: var(--fs-h2); line-height: 1.02; }
+.h3       { font-size: var(--fs-h3); line-height: 1.14; letter-spacing: -.012em;
+            font-variation-settings: 'SOFT' 28, 'WONK' 0, 'opsz' 42; font-weight: 400; }
+
+/* Descenders in a 300-weight Didone-adjacent face need real room. */
+.display, .h1 { padding-bottom: .06em; }
+
+.lead {
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 46ch;
+  text-wrap: pretty;
+}
+
+p { max-width: var(--measure); text-wrap: pretty; }
+
+/* ---------- Labels and data ---------- */
+.label {
+  font-family: var(--font-text);
+  font-size: var(--fs-micro);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.data {
+  font-family: var(--font-data);
+  font-weight: 500;
+  font-size: var(--fs-small);
+  letter-spacing: .02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-2);
+}
+
+/* ---------- Layout ---------- */
+.wrap {
+  width: 100%;
+  max-width: var(--grid-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  position: relative;
+  padding-block: var(--section-y);
+}
+
+.section--flush { padding-block: 0; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(16px, 2vw, 32px);
+}
+
+.rule { height: 1px; background: var(--rule); border: 0; margin: 0; }
+
+/* ---------- Accessibility ---------- */
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+
+.skip-link {
+  position: fixed; top: 12px; left: 12px; z-index: 200;
+  transform: translateY(-200%);
+  background: var(--marine); color: var(--caustic);
+  padding: 12px 18px; border-radius: var(--r-sm);
+  font-size: var(--fs-small); font-weight: 500;
+}
+.skip-link:focus-visible { transform: none; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.on-deep :focus-visible { outline-color: var(--caustic); }
+
+/* ---------- Reveal primitive ----------
+   GSAP sets the final state. These are the from-values so nothing
+   flashes unstyled, and they are cleared the moment JS is absent. */
+html.js [data-reveal] { opacity: 0; }
+
+/* Line masks produced by the splitter. */
+.line { display: block; overflow: hidden; }
+.line > span { display: inline-block; will-change: transform; }
+.word { display: inline-block; }
+
+/* Failsafe: if the module never boots, show the page as plain HTML
+   rather than as a screen of invisible text behind a stuck loader. */
+html.js-failed [data-reveal] { opacity: 1 !important; }
+html.js-failed .line > span { transform: none !important; opacity: 1 !important; }
+html.js-failed .boot { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-reveal] { opacity: 1 !important; transform: none !important; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}
