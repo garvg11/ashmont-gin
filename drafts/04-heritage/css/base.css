@@ -1,0 +1,172 @@
+@import url('../assets/fonts/fonts.css');
+
+/* ============================================================
+   Reset, typography, layout primitives, accessibility.
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: auto; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+body[data-loading='true'] { overflow: hidden; }
+
+img, svg, canvas, video { display: block; max-width: 100%; }
+button, input, textarea, select { font: inherit; color: inherit; }
+h1, h2, h3, h4, p, figure, blockquote, ul, ol, dl, dd { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+a { color: inherit; text-decoration: none; }
+
+::selection { background: var(--gold); color: var(--navy-950); }
+
+/* ---------- Display type ----------
+   Playfair Display at 400. The comp's headline sits at a light
+   weight with tight leading and generous width, and that ratio is
+   most of what makes it read as a spirits brand rather than a blog. */
+.display, .h1, .h2, .h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -.012em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.display { font-size: var(--fs-display); line-height: .98; letter-spacing: -.02em; }
+.h1      { font-size: var(--fs-h1); }
+.h2      { font-size: var(--fs-h2); }
+.h3      { font-size: var(--fs-h3); line-height: 1.2; letter-spacing: 0; }
+
+/* Gold italic emphasis inside a display line. Same family, never a
+   second serif. Playfair's italic descenders need real room. */
+.display em, .h1 em, .h2 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+  line-height: 1.12;
+  padding-bottom: .06em;
+}
+
+/* Descender reserve so italic y/g/p never clip against the mask. */
+.display, .h1, .h2 { padding-bottom: .08em; }
+
+.lead {
+  font-size: var(--fs-lead);
+  line-height: 1.6;
+  color: var(--ink-2);
+  max-width: 44ch;
+  text-wrap: pretty;
+}
+
+p { max-width: var(--measure); text-wrap: pretty; }
+
+/* ---------- Labels ----------
+   The comp's eyebrows are very small and very widely tracked. That
+   contrast against the display size is the house signature. */
+.label {
+  font-size: var(--fs-micro);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--accent);
+  line-height: 1.4;
+}
+.label--quiet { color: var(--ink-3); }
+
+.stat {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  line-height: 1;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* ---------- Layout ---------- */
+.wrap {
+  width: 100%;
+  max-width: var(--grid-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section { position: relative; padding-block: var(--section-y); background: var(--ground); }
+
+.rule { height: 1px; background: var(--rule); border: 0; margin: 0; }
+
+/* The comp separates blocks with a hairline broken by a small gold
+   diamond. It appears at every major transition, so it is one class. */
+.crest-rule {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--accent);
+}
+.crest-rule::before,
+.crest-rule::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: currentColor;
+  opacity: .42;
+}
+.crest-rule i {
+  width: 6px; height: 6px;
+  background: currentColor;
+  transform: rotate(45deg);
+  flex: none;
+}
+.crest-rule--short::before, .crest-rule--short::after { max-width: 96px; }
+
+/* ---------- Accessibility ---------- */
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+
+.skip-link {
+  position: fixed; top: 12px; left: 12px; z-index: 200;
+  transform: translateY(-200%);
+  background: var(--navy-900); color: #fff;
+  padding: 12px 18px; border-radius: var(--radius);
+  font-size: var(--fs-small); font-weight: 500;
+}
+.skip-link:focus-visible { transform: none; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius);
+}
+
+/* ---------- Reveal primitives ---------- */
+html.js [data-reveal] { opacity: 0; }
+.line { display: block; overflow: hidden; }
+.line > span { display: inline-block; will-change: transform; }
+.word { display: inline-block; }
+
+/* Failsafe: if the scripts never boot, show plain HTML rather than a
+   screen of invisible text behind a stuck loader. */
+html.js-failed [data-reveal] { opacity: 1 !important; }
+html.js-failed .line > span { transform: none !important; opacity: 1 !important; }
+html.js-failed .boot { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-reveal] { opacity: 1 !important; transform: none !important; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}

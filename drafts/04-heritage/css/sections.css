@@ -1,0 +1,345 @@
+/* ============================================================
+   Sections. The comp alternates grounds deliberately, so each
+   section declares its own and flips type roles with .on-dark.
+   ============================================================ */
+
+/* No z-index here on purpose. A stacking context on <main> would trap
+   every section below the fixed canvas, and no amount of z-index on a
+   child can escape its parent's context. Sections layer against the
+   stage directly instead. */
+main, .footer { position: relative; }
+
+/* Full-bleed photographic ground, shared by hero, world and house. */
+.plate { position: relative; isolation: isolate; overflow: hidden; }
+.plate__img {
+  position: absolute; inset: 0; z-index: -2;
+  width: 100%; height: 100%; object-fit: cover;
+}
+.plate__veil { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+
+/* ============ 1. HERO ============
+   Photograph, type bottom-left, bottle right. The scrim is a
+   left-weighted gradient so the copy keeps its ground while the
+   right third stays bright for the object.
+
+   The hero deliberately does NOT isolate. The rippled plate is drawn
+   by the fixed canvas at z-index 4, so the scrim and the copy have to
+   be able to stack above it, which they cannot do from inside an
+   isolated context. */
+.hero { isolation: auto; }
+.hero {
+  min-height: 100svh; min-height: 100dvh;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding-block: clamp(96px, 15vh, 150px) clamp(44px, 8vh, 84px);
+}
+.hero .plate__veil {
+  z-index: 5;
+  background:
+    linear-gradient(90deg, rgb(5 15 34 / .78) 0%, rgb(5 15 34 / .46) 32%, rgb(5 15 34 / .04) 58%, transparent 100%),
+    linear-gradient(180deg, rgb(5 15 34 / .40) 0%, transparent 30%, rgb(5 15 34 / .35) 100%);
+}
+/* The measure is set per child, not on the column. A ch cap on the
+   column resolves against the body font and starves the display line. */
+.hero__inner { position: relative; z-index: 6; display: grid; gap: clamp(18px, 2.6vh, 30px); max-width: none; }
+.hero__title { max-width: 12ch; }
+/* The comp sets a diamond after the full stop. It travels with the
+   last word through the line splitter. */
+.hero__dot {
+  display: inline-block;
+  width: .1em; height: .1em;
+  margin-left: .18em;
+  background: currentColor;
+  transform: rotate(45deg) translateY(-.14em);
+}
+.hero__kicker { color: var(--haze); letter-spacing: .38em; }
+.hero__foot {
+  display: grid; gap: clamp(22px, 3.4vh, 34px);
+  padding-top: clamp(18px, 3vh, 30px);
+  border-top: 1px solid rgb(246 242 234 / .22);
+  max-width: 46ch;
+}
+.hero__blurb { font-size: var(--fs-small); line-height: 1.7; color: var(--haze); max-width: 42ch; }
+
+/* ============ 2. OUR WORLD ============
+   Copy left over the photograph, no second column. */
+.world { min-height: 92svh; min-height: 92dvh; display: flex; align-items: center; padding-block: var(--section-y); }
+.world .plate__veil {
+  background: linear-gradient(90deg, rgb(8 27 60 / .88) 0%, rgb(8 27 60 / .55) 40%, rgb(8 27 60 / .05) 74%, transparent 100%);
+}
+.world__inner { display: grid; gap: clamp(20px, 3vh, 32px); max-width: none; }
+.world__title { max-width: 13ch; }
+
+/* ============ 3. PRODUCT ============
+   Marble ground. The bottle is the WebGL object and lands in the
+   left column, so this column is empty by design and holds height. */
+.product { background: var(--marble); }
+.product__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 90px);
+  align-items: center;
+  min-height: 78vh;
+}
+.product__stagehole { position: relative; min-height: clamp(380px, 56vh, 620px); }
+.product__grabhint {
+  z-index: 5;
+  position: absolute; left: 50%; bottom: 4%;
+  transform: translateX(-50%);
+  display: inline-flex; align-items: center; gap: 10px;
+  color: var(--ink-3); white-space: nowrap;
+}
+.product__grabhint svg { width: 15px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.2; }
+.product__copy { position: relative; z-index: 5; display: grid; gap: clamp(20px, 2.6vh, 30px); }
+
+.spec { display: grid; gap: 0; }
+.spec > div {
+  display: grid;
+  grid-template-columns: 26px auto 1fr;
+  align-items: baseline;
+  gap: 16px;
+  padding-block: 15px;
+}
+.spec > div + div { border-top: 1px solid var(--rule); }
+.spec svg { width: 18px; height: 18px; fill: none; stroke: var(--accent); stroke-width: 1.2; align-self: center; }
+.spec dt { font-size: var(--fs-micro); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--ink-3); }
+.spec dd { font-size: var(--fs-lead); color: var(--ink); }
+.spec dd small { display: block; font-size: var(--fs-micro); color: var(--ink-3); letter-spacing: .05em; }
+.product__note { font-size: var(--fs-micro); color: var(--ink-3); }
+
+/* ============ 4. ORIGINS ============
+   Cream ground, two origins facing each other across a seal. */
+.origins { background: var(--cream); --ink: #22303f; --ink-2: #4a5a68; --ink-3: #5f6d77; --rule: rgb(34 48 63 / .16); }
+.origins__pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 64px);
+  align-items: start;
+}
+.origin { display: grid; gap: 16px; }
+.origin__name { font-size: clamp(2.25rem, 4.4vw, 4rem); line-height: 1; }
+.origin__sub { font-family: var(--font-display); font-style: italic; font-size: var(--fs-lead); color: var(--accent); }
+.origin--right { text-align: right; justify-items: end; }
+.origin--right p { text-align: right; }
+.origins__seal { display: grid; gap: 18px; justify-items: center; align-content: start; padding-top: 8px; }
+.origins__seal .media { width: clamp(150px, 15vw, 230px); }
+.origins__close { display: grid; gap: 16px; justify-items: center; text-align: center; margin-top: clamp(52px, 8vh, 96px); }
+.origins__close p { text-align: center; }
+
+/* ============ 5. THE MAKING ============
+   Navy ground. Five steps on a gold timeline. Not cards: the rule
+   carries the sequence and the numbers do the work. */
+.making { background: var(--navy-900); }
+.making__head { display: grid; gap: 22px; max-width: 40ch; margin-bottom: clamp(48px, 7vh, 86px); }
+.making__steps {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 34px);
+  position: relative;
+  padding-top: 34px;
+}
+/* the timeline rule with its five nodes */
+.making__steps::before {
+  content: '';
+  position: absolute; top: 5px; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dk) 8%, var(--gold-dk) 92%, transparent);
+  opacity: .7;
+}
+.step { display: grid; gap: 12px; position: relative; }
+.step::before {
+  content: '';
+  position: absolute; top: -33px; left: 0;
+  width: 7px; height: 7px;
+  background: var(--gold-lt);
+  transform: rotate(45deg);
+}
+.step__n { font-family: var(--font-display); font-size: clamp(1.6rem, 2.4vw, 2.3rem); line-height: 1; color: var(--gold-lt); }
+.step__t { font-size: var(--fs-micro); letter-spacing: var(--track-label); text-transform: uppercase; color: #f6f2ea; }
+.step p { font-size: var(--fs-small); color: var(--haze); max-width: 26ch; }
+.making__figure { margin-top: clamp(48px, 7vh, 88px); }
+
+/* ============ 6. AWARDS ============
+   Near-black. The ground is CSS, not a photograph, because a noise
+   texture costs half a megabyte and buys nothing. */
+.awards {
+  background:
+    radial-gradient(120% 80% at 50% 0%, #16191f 0%, transparent 60%),
+    var(--slate-950);
+  position: relative;
+}
+.awards::after {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none; opacity: .5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.5'/%3E%3C/svg%3E");
+}
+.awards__row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(28px, 5vw, 80px);
+  align-items: end;
+}
+.award { display: grid; gap: 18px; justify-items: center; text-align: center; }
+.award__mark {
+  width: clamp(120px, 13vw, 168px); aspect-ratio: 1;
+  display: grid; place-items: center;
+  border: 1px solid var(--gold-dk);
+  border-radius: 50%;
+  color: var(--gold-lt);
+  position: relative;
+}
+.award__mark--hex { border-radius: 0; clip-path: polygon(50% 0, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%); border: 0; background: #14171c; }
+.award__mark span { font-family: var(--font-display); font-size: clamp(1.1rem, 1.5vw, 1.5rem); line-height: 1.1; }
+.award__mark small { display: block; font-family: var(--font-sans); font-size: 10px; letter-spacing: .2em; margin-top: 6px; color: var(--gold-dk); }
+.award__body { display: grid; gap: 5px; }
+.award__body b { font-family: var(--font-display); font-weight: 400; font-size: var(--fs-lead); color: #f6f2ea; }
+.award__body span { font-size: var(--fs-micro); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--gold-lt); }
+.awards__quote {
+  margin: clamp(44px, 6vh, 76px) auto 0;
+  max-width: 46ch;
+  border: 1px solid rgb(184 149 95 / .34);
+  border-radius: var(--radius);
+  padding: clamp(22px, 3vw, 32px);
+  text-align: center;
+}
+.awards__quote p {
+  font-family: var(--font-display); font-style: italic;
+  font-size: var(--fs-lead); color: #e7e0d4; max-width: none;
+}
+
+/* ============ 7. SERVES ============ */
+.serves { background: var(--marble); }
+.serves__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(32px, 5vw, 80px);
+  align-items: center;
+}
+.serves__copy { display: grid; gap: clamp(18px, 2.4vh, 28px); }
+.serves__ways { display: flex; align-items: stretch; gap: clamp(24px, 3vw, 44px); margin-top: 6px; }
+.way { display: grid; gap: 12px; justify-items: center; }
+.way + .way { border-left: 1px solid var(--rule); padding-left: clamp(24px, 3vw, 44px); }
+.way svg { width: 40px; height: 44px; fill: none; stroke: var(--accent); stroke-width: 1; }
+.way span { font-size: var(--fs-micro); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--ink); }
+
+/* ============ 8. THE HOUSE SERVE ============ */
+.house { min-height: 88svh; min-height: 88dvh; display: flex; align-items: center; padding-block: var(--section-y); }
+.house .plate__veil {
+  background: linear-gradient(90deg, rgb(223 229 236 / .94) 0%, rgb(223 229 236 / .72) 30%, rgb(223 229 236 / .12) 60%, transparent 100%);
+}
+.house__inner { display: grid; gap: 20px; max-width: none; justify-items: start; }
+.house__mark { font-size: clamp(3rem, 6vw, 5rem); line-height: 1; }
+
+/* ============ 9. FOOTER ============
+   The comp treats the footer as a closing plate rather than a
+   sitemap: the crest, the mark and the seal carry it, and the links
+   sit underneath in quiet columns. */
+.footer { position: relative; isolation: isolate; overflow: hidden; padding-block: clamp(72px, 10vh, 128px) 0; }
+.footer .plate__veil {
+  background: linear-gradient(180deg, rgb(238 242 247 / .95) 0%, rgb(238 242 247 / .88) 55%, rgb(238 242 247 / .95) 100%);
+}
+
+.footer__brand { display: grid; gap: 16px; justify-items: center; text-align: center; margin-bottom: clamp(40px, 6vh, 72px); }
+.footer__brand p { text-align: center; max-width: 42ch; }
+.footer__brand .crest-rule { width: min(300px, 60vw); }
+.footer__mark {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3.6vw, 3rem);
+  letter-spacing: .38em; text-indent: .38em;
+  text-transform: uppercase; line-height: 1;
+  color: var(--ink);
+}
+.footer__sign {
+  font-family: var(--font-display); font-style: italic;
+  font-size: var(--fs-lead); color: var(--accent);
+  line-height: 1.2; padding-bottom: .1em;
+}
+.footer__crest { width: clamp(84px, 9vw, 116px); height: auto; color: var(--navy-800); margin-top: 10px; opacity: .9; }
+
+.footer__follow { display: grid; gap: 14px; justify-items: center; margin-top: 8px; width: min(340px, 74vw); }
+.footer__follow .crest-rule { width: 100%; }
+.footer__social { display: flex; gap: 22px; align-items: center; }
+.footer__social a {
+  display: grid; place-items: center;
+  width: 38px; height: 38px;
+  color: var(--ink-2);
+  transition: color var(--d-ui) var(--ease-soft);
+}
+.footer__social a:hover { color: var(--accent); }
+.footer__social svg { width: 21px; height: 21px; fill: currentColor; }
+
+.footer__cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: clamp(30px, 4vw, 56px);
+  padding-block: clamp(36px, 5vh, 56px);
+  border-top: 1px solid var(--rule);
+}
+.footer__col { display: grid; gap: 11px; align-content: start; }
+.footer__col a { font-size: var(--fs-small); color: var(--ink-2); justify-self: start; transition: color var(--d-ui) var(--ease-soft); }
+.footer__col a:hover { color: var(--ink); }
+.footer__note { font-size: var(--fs-small); color: var(--ink-2); }
+.footer__contact { gap: 14px; }
+.footer__contact div { display: grid; grid-template-columns: 20px 1fr; gap: 12px; align-items: start; }
+.footer__contact svg { width: 15px; height: 15px; fill: none; stroke: var(--accent); stroke-width: 1.2; margin-top: 4px; }
+.footer__contact span { font-size: var(--fs-small); color: var(--ink-2); line-height: 1.5; }
+.footer__join { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: end; margin-top: 2px; }
+
+.legal {
+  background: var(--navy-950);
+  color: var(--haze);
+  padding-block: 22px;
+  margin-top: clamp(24px, 4vh, 44px);
+}
+.legal__inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: clamp(18px, 3vw, 40px);
+  align-items: center;
+  font-size: var(--fs-micro);
+  letter-spacing: .1em;
+}
+.legal__inner nav { display: flex; gap: clamp(14px, 2vw, 26px); }
+.legal a { transition: color var(--d-ui) var(--ease-soft); }
+.legal a:hover { color: #f6f2ea; }
+.legal__seal { color: var(--gold-dk); }
+.legal__seal svg { width: 62px; height: 62px; }
+.legal__copy { text-align: right; max-width: 34ch; line-height: 1.5; }
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+@media (max-width: 1080px) {
+  .product__inner { grid-template-columns: 1fr; }
+  .product__stagehole { min-height: clamp(320px, 46vh, 460px); order: -1; }
+  .serves__inner { grid-template-columns: 1fr; }
+  .making__steps { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 34px; }
+  .making__steps::before { display: none; }
+  .step::before { top: -20px; }
+  .awards__row { grid-template-columns: 1fr; gap: 44px; }
+}
+
+@media (max-width: 760px) {
+  .hero__title { max-width: 12ch; }
+  .hero__foot { max-width: none; }
+  .world__inner, .house__inner { max-width: none; }
+  .world .plate__veil,
+  .house .plate__veil { background: linear-gradient(180deg, rgb(8 27 60 / .30) 0%, rgb(8 27 60 / .82) 46%, rgb(8 27 60 / .92) 100%); }
+  .house .plate__veil { background: linear-gradient(180deg, rgb(223 229 236 / .30) 0%, rgb(223 229 236 / .88) 46%, rgb(223 229 236 / .96) 100%); }
+  .world { align-items: flex-end; }
+  .house { align-items: flex-end; }
+
+  .origins__pair { grid-template-columns: 1fr; gap: 40px; }
+  .origin--right { text-align: left; justify-items: start; }
+  .origin--right p { text-align: left; }
+  .origins__seal { order: -1; }
+
+  .making__steps { grid-template-columns: 1fr; row-gap: 28px; }
+  .serves__ways { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .way { justify-items: start; }
+  .way + .way { border-left: 0; border-top: 1px solid var(--rule); padding-left: 0; padding-top: 20px; width: 100%; }
+
+  .footer__join { grid-template-columns: 1fr; }
+  .legal__inner { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 16px; }
+  .legal__copy { text-align: center; }
+  .legal__inner nav { justify-content: center; flex-wrap: wrap; }
+}
